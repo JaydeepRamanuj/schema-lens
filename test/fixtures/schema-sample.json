@@ -1,0 +1,148 @@
+{
+  "meta": {
+    "connectionId": "test-connection-id",
+    "dbName": "testdb",
+    "generatedAt": "2026-10-01T10:00:00.000Z",
+    "extractor": "custom",
+    "snapshotVersion": 1
+  },
+  "tables": {
+    "public.users": {
+      "type": "table",
+      "schema": "public",
+      "comment": "Application users",
+      "rlsEnabled": false,
+      "rlsForced": false,
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()", "comment": null },
+        { "name": "email", "type": "text", "nullable": false, "default": null, "comment": "User email address" },
+        { "name": "created_at", "type": "timestamp with time zone", "nullable": false, "default": "now()", "comment": null }
+      ],
+      "constraints": [
+        { "name": "users_pkey", "type": "PRIMARY KEY", "columns": ["id"], "def": "PRIMARY KEY (id)" },
+        { "name": "users_email_key", "type": "UNIQUE", "columns": ["email"], "def": "UNIQUE (email)" }
+      ],
+      "indexes": [
+        { "name": "users_email_idx", "columns": ["email"], "unique": true, "def": "CREATE UNIQUE INDEX users_email_idx ON public.users USING btree (email)" }
+      ],
+      "triggers": [],
+      "policies": []
+    },
+    "public.orders": {
+      "type": "table",
+      "schema": "public",
+      "comment": "Customer orders",
+      "rlsEnabled": true,
+      "rlsForced": false,
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()", "comment": null },
+        { "name": "user_id", "type": "uuid", "nullable": false, "default": null, "comment": "Owner of the order" },
+        { "name": "status", "type": "order_status", "nullable": false, "default": "'pending'", "comment": null },
+        { "name": "total", "type": "numeric(10,2)", "nullable": false, "default": null, "comment": null }
+      ],
+      "constraints": [
+        { "name": "orders_pkey", "type": "PRIMARY KEY", "columns": ["id"], "def": "PRIMARY KEY (id)" },
+        {
+          "name": "orders_user_id_fkey",
+          "type": "FOREIGN KEY",
+          "columns": ["user_id"],
+          "references": { "table": "public.users", "columns": ["id"] },
+          "onDelete": "CASCADE",
+          "def": "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE"
+        },
+        { "name": "orders_total_check", "type": "CHECK", "columns": ["total"], "def": "CHECK ((total >= 0))" }
+      ],
+      "indexes": [
+        { "name": "orders_user_id_idx", "columns": ["user_id"], "unique": false, "def": "CREATE INDEX orders_user_id_idx ON public.orders USING btree (user_id)" }
+      ],
+      "triggers": [],
+      "policies": [
+        {
+          "name": "orders_user_policy",
+          "permissive": true,
+          "roles": ["authenticated"],
+          "cmd": "SELECT",
+          "qual": "(user_id = auth.uid())",
+          "withCheck": null
+        }
+      ]
+    },
+    "public.order_items": {
+      "type": "table",
+      "schema": "public",
+      "comment": null,
+      "rlsEnabled": false,
+      "rlsForced": false,
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()", "comment": null },
+        { "name": "order_id", "type": "uuid", "nullable": false, "default": null, "comment": null },
+        { "name": "product_id", "type": "uuid", "nullable": false, "default": null, "comment": null },
+        { "name": "quantity", "type": "integer", "nullable": false, "default": null, "comment": null }
+      ],
+      "constraints": [
+        { "name": "order_items_pkey", "type": "PRIMARY KEY", "columns": ["id"], "def": "PRIMARY KEY (id)" },
+        {
+          "name": "order_items_order_id_fkey",
+          "type": "FOREIGN KEY",
+          "columns": ["order_id"],
+          "references": { "table": "public.orders", "columns": ["id"] },
+          "onDelete": "CASCADE",
+          "def": "FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE"
+        },
+        {
+          "name": "order_items_product_id_fkey",
+          "type": "FOREIGN KEY",
+          "columns": ["product_id"],
+          "references": { "table": "public.products", "columns": ["id"] },
+          "onDelete": "RESTRICT",
+          "def": "FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE RESTRICT"
+        }
+      ],
+      "indexes": [],
+      "triggers": [],
+      "policies": []
+    },
+    "public.products": {
+      "type": "table",
+      "schema": "public",
+      "comment": "Product catalog",
+      "rlsEnabled": false,
+      "rlsForced": false,
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()", "comment": null },
+        { "name": "name", "type": "text", "nullable": false, "default": null, "comment": null },
+        { "name": "price", "type": "numeric(10,2)", "nullable": false, "default": null, "comment": null }
+      ],
+      "constraints": [
+        { "name": "products_pkey", "type": "PRIMARY KEY", "columns": ["id"], "def": "PRIMARY KEY (id)" }
+      ],
+      "indexes": [],
+      "triggers": [],
+      "policies": []
+    }
+  },
+  "relations": {
+    "public.users": {
+      "references": [],
+      "referencedBy": ["public.orders"]
+    },
+    "public.orders": {
+      "references": ["public.users"],
+      "referencedBy": ["public.order_items"]
+    },
+    "public.order_items": {
+      "references": ["public.orders", "public.products"],
+      "referencedBy": []
+    },
+    "public.products": {
+      "references": [],
+      "referencedBy": ["public.order_items"]
+    }
+  },
+  "enums": {
+    "public.order_status": {
+      "schema": "public",
+      "values": ["pending", "paid", "shipped", "cancelled"]
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "default": "myapp-dev",
+  "ttlSeconds": 5,
+  "defaultFormat": "compact",
+  "profiles": {
+    "myapp-dev": {
+      "url": "postgres://user:password@host:5432/dbname",
+      "schemas": ["public"],
+      "comment": "Local development database"
+    }
+  }
+}

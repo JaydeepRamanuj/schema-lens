@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 // ============================================================
 // cli/index.ts — commander entry point.
 // Each command: resolve connection → freshness check → refresh if needed
@@ -48,12 +49,14 @@ interface ConnectionContext {
   connectionId: string;
   format: OutputFormat;
   ttlSeconds: number;
+  isGlobal?: boolean | undefined;
 }
 
 async function resolveCtx(opts: {
   url?: string;
   name?: string;
   format?: string;
+  global?: boolean;
 }): Promise<ConnectionContext> {
   const config = loadConfig();
   const connOpts: { url?: string; name?: string } = {};
@@ -69,6 +72,7 @@ async function resolveCtx(opts: {
     connectionId: deriveConnectionId(conn.url),
     format,
     ttlSeconds: config.ttlSeconds ?? 5,
+    isGlobal: opts.global,
   };
 }
 
@@ -105,8 +109,9 @@ async function ensureFreshSchema(
   ctx: ConnectionContext,
   force = false
 ): Promise<RefreshResult> {
-  const storedFp = await readFingerprint(ctx.connectionId);
-  const storedSchema = await readSchema(ctx.connectionId);
+  const storeOpts = { isGlobal: ctx.isGlobal };
+  const storedFp = await readFingerprint(ctx.connectionId, storeOpts);
+  const storedSchema = await readSchema(ctx.connectionId, storeOpts);
 
   // Force re-extract
   if (force || !storedSchema) {
@@ -155,7 +160,7 @@ async function ensureFreshSchema(
     if (result.isFresh) {
       // Update verifiedAt in fingerprint even if nothing changed
       if (newFingerprint) {
-        await writeFingerprint(ctx.connectionId, newFingerprint);
+        await writeFingerprint(ctx.connectionId, newFingerprint, storeOpts);
       }
       return {
         schema: storedSchema,
@@ -186,10 +191,11 @@ async function doRefreshWithClient(
   ctx: ConnectionContext,
   existingFp: import("../core/types.js").Fingerprint | null
 ): Promise<RefreshResult> {
-  const release = await acquireLock(ctx.connectionId);
+  const storeOpts = { isGlobal: ctx.isGlobal };
+  const release = await acquireLock(ctx.connectionId, storeOpts);
   try {
     const rawData = await extract(client, ctx.schemas);
-    await writeRaw(ctx.connectionId, rawData);
+    await writeRaw(ctx.connectionId, rawData, storeOpts);
 
     // Get DB name
     const dbRes = await client.query<{ current_database: string }>(
@@ -205,8 +211,8 @@ async function doRefreshWithClient(
 
     const fp = await buildFingerprint(client, ctx.schemas);
 
-    await writeSchema(ctx.connectionId, schema);
-    await writeFingerprint(ctx.connectionId, fp);
+    await writeSchema(ctx.connectionId, schema, storeOpts);
+    await writeFingerprint(ctx.connectionId, fp, storeOpts);
 
     return {
       schema,
@@ -233,7 +239,8 @@ const globalOptions = (cmd: Command) =>
   cmd
     .option("--url <postgres-url>", "Connection URL (overrides config + env)")
     .option("--name <profile>", "Named profile from dbctx.config.json")
-    .option("--format <format>", "Output format: json | md | compact");
+    .option("--format <format>", "Output format: json | md | compact")
+    .option("--global", "Use the global cache directory (~/.dbctx/cache)");
 
 // ---- init ----
 globalOptions(
@@ -285,8 +292,9 @@ globalOptions(
 ).action(async (opts) => {
   try {
     const ctx = await resolveCtx(opts);
-    const fp = await readFingerprint(ctx.connectionId);
-    const schema = await readSchema(ctx.connectionId);
+    const storeOpts = { isGlobal: ctx.isGlobal };
+    const fp = await readFingerprint(ctx.connectionId, storeOpts);
+    const schema = await readSchema(ctx.connectionId, storeOpts);
 
     let dbReachable = false;
     try {

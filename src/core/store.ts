@@ -7,11 +7,16 @@ import fs from "node:fs";
 import fsPromises from "node:fs/promises";
 import path from "node:path";
 import crypto from "node:crypto";
+import os from "node:os";
 import type { NormalizedSchema, Fingerprint } from "./types.js";
 
 // --------------- Path helpers ---------------
 
 const CACHE_ROOT = ".schema-cache";
+
+export interface StoreOptions {
+  isGlobal?: boolean | undefined;
+}
 
 export function deriveConnectionId(dsn: string): string {
   // Extract host:port/dbname from DSN — never include credentials in the path
@@ -25,31 +30,45 @@ export function deriveConnectionId(dsn: string): string {
   }
 }
 
-function cacheDir(connectionId: string): string {
-  return path.join(process.cwd(), CACHE_ROOT, connectionId);
+function resolveCacheDir(connectionId: string, options?: StoreOptions): string {
+  const localDir = path.join(process.cwd(), CACHE_ROOT, connectionId);
+  const globalDir = path.join(os.homedir(), ".dbctx", "cache", connectionId);
+
+  if (options?.isGlobal) {
+    return globalDir;
+  }
+
+  if (fs.existsSync(localDir)) {
+    return localDir;
+  }
+  if (fs.existsSync(globalDir)) {
+    return globalDir;
+  }
+
+  return localDir;
 }
 
-function schemaPath(connectionId: string): string {
-  return path.join(cacheDir(connectionId), "schema.json");
+function schemaPath(connectionId: string, options?: StoreOptions): string {
+  return path.join(resolveCacheDir(connectionId, options), "schema.json");
 }
 
-function fingerprintPath(connectionId: string): string {
-  return path.join(cacheDir(connectionId), "fingerprint.json");
+function fingerprintPath(connectionId: string, options?: StoreOptions): string {
+  return path.join(resolveCacheDir(connectionId, options), "fingerprint.json");
 }
 
-function rawPath(connectionId: string): string {
-  return path.join(cacheDir(connectionId), "raw");
+function rawPath(connectionId: string, options?: StoreOptions): string {
+  return path.join(resolveCacheDir(connectionId, options), "raw");
 }
 
-function lockPath(connectionId: string): string {
-  return path.join(cacheDir(connectionId), ".lock");
+function lockPath(connectionId: string, options?: StoreOptions): string {
+  return path.join(resolveCacheDir(connectionId, options), ".lock");
 }
 
 // --------------- Ensure directory exists ---------------
 
-async function ensureDir(connectionId: string): Promise<void> {
-  await fsPromises.mkdir(cacheDir(connectionId), { recursive: true });
-  await fsPromises.mkdir(rawPath(connectionId), { recursive: true });
+async function ensureDir(connectionId: string, options?: StoreOptions): Promise<void> {
+  await fsPromises.mkdir(resolveCacheDir(connectionId, options), { recursive: true });
+  await fsPromises.mkdir(rawPath(connectionId, options), { recursive: true });
 }
 
 // --------------- Atomic write ---------------
@@ -63,9 +82,10 @@ async function writeAtomic(filePath: string, data: unknown): Promise<void> {
 // --------------- Schema ---------------
 
 export async function readSchema(
-  connectionId: string
+  connectionId: string,
+  options?: StoreOptions
 ): Promise<NormalizedSchema | null> {
-  const p = schemaPath(connectionId);
+  const p = schemaPath(connectionId, options);
   if (!fs.existsSync(p)) return null;
   try {
     const raw = await fsPromises.readFile(p, "utf8");
@@ -77,18 +97,20 @@ export async function readSchema(
 
 export async function writeSchema(
   connectionId: string,
-  schema: NormalizedSchema
+  schema: NormalizedSchema,
+  options?: StoreOptions
 ): Promise<void> {
-  await ensureDir(connectionId);
-  await writeAtomic(schemaPath(connectionId), schema);
+  await ensureDir(connectionId, options);
+  await writeAtomic(schemaPath(connectionId, options), schema);
 }
 
 // --------------- Fingerprint ---------------
 
 export async function readFingerprint(
-  connectionId: string
+  connectionId: string,
+  options?: StoreOptions
 ): Promise<Fingerprint | null> {
-  const p = fingerprintPath(connectionId);
+  const p = fingerprintPath(connectionId, options);
   if (!fs.existsSync(p)) return null;
   try {
     const raw = await fsPromises.readFile(p, "utf8");
@@ -100,21 +122,23 @@ export async function readFingerprint(
 
 export async function writeFingerprint(
   connectionId: string,
-  fp: Fingerprint
+  fp: Fingerprint,
+  options?: StoreOptions
 ): Promise<void> {
-  await ensureDir(connectionId);
-  await writeAtomic(fingerprintPath(connectionId), fp);
+  await ensureDir(connectionId, options);
+  await writeAtomic(fingerprintPath(connectionId, options), fp);
 }
 
 // --------------- Raw debug output ---------------
 
 export async function writeRaw(
   connectionId: string,
-  data: unknown
+  data: unknown,
+  options?: StoreOptions
 ): Promise<void> {
-  await ensureDir(connectionId);
+  await ensureDir(connectionId, options);
   await writeAtomic(
-    path.join(rawPath(connectionId), "extract-debug.json"),
+    path.join(rawPath(connectionId, options), "extract-debug.json"),
     data
   );
 }
@@ -141,10 +165,11 @@ function isProcessAlive(pid: number): boolean {
  * Throws if another live process holds the lock.
  */
 export async function acquireLock(
-  connectionId: string
+  connectionId: string,
+  options?: StoreOptions
 ): Promise<() => Promise<void>> {
-  await ensureDir(connectionId);
-  const lp = lockPath(connectionId);
+  await ensureDir(connectionId, options);
+  const lp = lockPath(connectionId, options);
 
   if (fs.existsSync(lp)) {
     try {
@@ -189,11 +214,12 @@ export interface StoreInfo {
   hasFingerprint: boolean;
 }
 
-export async function getStoreInfo(connectionId: string): Promise<StoreInfo> {
+export async function getStoreInfo(connectionId: string, options?: StoreOptions): Promise<StoreInfo> {
+  const dir = resolveCacheDir(connectionId, options);
   return {
     connectionId,
-    cacheDir: cacheDir(connectionId),
-    hasSchema: fs.existsSync(schemaPath(connectionId)),
-    hasFingerprint: fs.existsSync(fingerprintPath(connectionId)),
+    cacheDir: dir,
+    hasSchema: fs.existsSync(schemaPath(connectionId, options)),
+    hasFingerprint: fs.existsSync(fingerprintPath(connectionId, options)),
   };
 }

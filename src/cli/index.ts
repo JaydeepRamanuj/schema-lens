@@ -28,10 +28,16 @@ import {
   getColumnConstraints,
   related,
   findColumns,
+  findCommonColumns,
   joinPath,
   getEnums,
   getPolicies,
   buildStatus,
+  searchSchema,
+  findByType,
+  findPolymorphic,
+  checkIndex,
+  findOrphans,
 } from "../core/queries.js";
 import {
   formatOutput,
@@ -259,7 +265,7 @@ globalOptions(
         `  Verified at: ${result.verifiedAt}`
     );
   } catch (err) {
-    console.error(`Error: ${String(err)}`);
+    console.error(`Error: ${err instanceof Error ? err.message : String(err)}`);
     process.exit(1);
   }
 });
@@ -279,7 +285,7 @@ globalOptions(
       `✓ Refreshed. ${tableCount} tables.\n  Verified at: ${result.verifiedAt}`
     );
   } catch (err) {
-    console.error(`Error: ${String(err)}`);
+    console.error(`Error: ${err instanceof Error ? err.message : String(err)}`);
     process.exit(1);
   }
 });
@@ -313,7 +319,7 @@ globalOptions(
       stale: status.stale,
     }));
   } catch (err) {
-    console.error(`Error: ${String(err)}`);
+    console.error(`Error: ${err instanceof Error ? err.message : String(err)}`);
     process.exit(1);
   }
 });
@@ -347,7 +353,7 @@ globalOptions(
       console.log(formatOutput(ctx.format, queryResult, fi));
     }
   } catch (err) {
-    console.error(`Error: ${String(err)}`);
+    console.error(`Error: ${err instanceof Error ? err.message : String(err)}`);
     process.exit(1);
   }
 });
@@ -381,7 +387,7 @@ globalOptions(
       console.log(formatOutput(ctx.format, queryResult, fi));
     }
   } catch (err) {
-    console.error(`Error: ${String(err)}`);
+    console.error(`Error: ${err instanceof Error ? err.message : String(err)}`);
     process.exit(1);
   }
 });
@@ -408,7 +414,7 @@ globalOptions(
       console.log(formatOutput(ctx.format, cols, fi));
     }
   } catch (err) {
-    console.error(`Error: ${String(err)}`);
+    console.error(`Error: ${err instanceof Error ? err.message : String(err)}`);
     process.exit(1);
   }
 });
@@ -437,7 +443,7 @@ globalOptions(
     const fi = { verifiedAt: result.verifiedAt, refreshed: result.refreshed, stale: result.stale };
     console.log(formatOutput(ctx.format, constraints, fi));
   } catch (err) {
-    console.error(`Error: ${String(err)}`);
+    console.error(`Error: ${err instanceof Error ? err.message : String(err)}`);
     process.exit(1);
   }
 });
@@ -466,7 +472,7 @@ globalOptions(
       console.log(formatOutput(ctx.format, rel, fi));
     }
   } catch (err) {
-    console.error(`Error: ${String(err)}`);
+    console.error(`Error: ${err instanceof Error ? err.message : String(err)}`);
     process.exit(1);
   }
 });
@@ -496,7 +502,35 @@ globalOptions(
       console.log(formatOutput(ctx.format, found, fi));
     }
   } catch (err) {
-    console.error(`Error: ${String(err)}`);
+    console.error(`Error: ${err instanceof Error ? err.message : String(err)}`);
+    process.exit(1);
+  }
+});
+
+// ---- find-common-columns ----
+globalOptions(
+  program
+    .command("find-common-columns <tables...>")
+    .description("Find columns that exist in all of the specified tables")
+    .option("--pattern <regex>", "Optional regex pattern to filter common columns")
+).action(async (tables: string[], opts) => {
+  try {
+    const ctx = await resolveCtx(opts);
+    const result = await ensureFreshSchema(ctx);
+    const found = findCommonColumns(result.schema, tables, opts.pattern);
+    const fi = { verifiedAt: result.verifiedAt, refreshed: result.refreshed, stale: result.stale };
+
+    if (ctx.format === "compact") {
+      console.log(
+        (found.columns.length ? found.columns.join("\n") : "(no common columns)") +
+          "\n" +
+          freshnessFooter(fi)
+      );
+    } else {
+      console.log(formatOutput(ctx.format, found, fi));
+    }
+  } catch (err) {
+    console.error(`Error: ${err instanceof Error ? err.message : String(err)}`);
     process.exit(1);
   }
 });
@@ -527,7 +561,7 @@ globalOptions(
       console.log(formatOutput(ctx.format, jp, fi));
     }
   } catch (err) {
-    console.error(`Error: ${String(err)}`);
+    console.error(`Error: ${err instanceof Error ? err.message : String(err)}`);
     process.exit(1);
   }
 });
@@ -557,7 +591,7 @@ globalOptions(
       console.log(formatOutput(ctx.format, enums, fi));
     }
   } catch (err) {
-    console.error(`Error: ${String(err)}`);
+    console.error(`Error: ${err instanceof Error ? err.message : String(err)}`);
     process.exit(1);
   }
 });
@@ -588,7 +622,155 @@ globalOptions(
       console.log(formatOutput(ctx.format, pols, fi));
     }
   } catch (err) {
-    console.error(`Error: ${String(err)}`);
+    console.error(`Error: ${err instanceof Error ? err.message : String(err)}`);
+    process.exit(1);
+  }
+});
+
+// ---- search-schema ----
+globalOptions(
+  program
+    .command("search-schema <keyword>")
+    .description("Global semantic search across tables, columns, comments, and enums")
+).action(async (keyword: string, opts) => {
+  try {
+    const ctx = await resolveCtx(opts);
+    const result = await ensureFreshSchema(ctx);
+    const found = searchSchema(result.schema, keyword);
+    const fi = { verifiedAt: result.verifiedAt, refreshed: result.refreshed, stale: result.stale };
+
+    if (ctx.format === "compact") {
+      const lines = found.matches.map(
+        (m) => `[${m.type}] ${m.location} - ${m.matchReason}${m.comment ? `\n    Comment: ${m.comment}` : ""}`
+      );
+      console.log(
+        (lines.length ? lines.join("\n") : "(no matches)") +
+          "\n" +
+          freshnessFooter(fi)
+      );
+    } else {
+      console.log(formatOutput(ctx.format, found, fi));
+    }
+  } catch (err) {
+    console.error(`Error: ${err instanceof Error ? err.message : String(err)}`);
+    process.exit(1);
+  }
+});
+
+// ---- find-by-type ----
+globalOptions(
+  program
+    .command("find-by-type <type>")
+    .description("Find all columns that match a specific data type")
+).action(async (type: string, opts) => {
+  try {
+    const ctx = await resolveCtx(opts);
+    const result = await ensureFreshSchema(ctx);
+    const found = findByType(result.schema, type);
+    const fi = { verifiedAt: result.verifiedAt, refreshed: result.refreshed, stale: result.stale };
+
+    if (ctx.format === "compact") {
+      const lines = found.matches.map(
+        (m) => `${m.table}.${m.column.name} (${m.column.type})`
+      );
+      console.log(
+        (lines.length ? lines.join("\n") : "(no matches)") +
+          "\n" +
+          freshnessFooter(fi)
+      );
+    } else {
+      console.log(formatOutput(ctx.format, found, fi));
+    }
+  } catch (err) {
+    console.error(`Error: ${err instanceof Error ? err.message : String(err)}`);
+    process.exit(1);
+  }
+});
+
+// ---- find-polymorphic ----
+globalOptions(
+  program
+    .command("find-polymorphic")
+    .description("Scan for polymorphic association patterns (e.g. item_type and item_id)")
+).action(async (opts) => {
+  try {
+    const ctx = await resolveCtx(opts);
+    const result = await ensureFreshSchema(ctx);
+    const found = findPolymorphic(result.schema);
+    const fi = { verifiedAt: result.verifiedAt, refreshed: result.refreshed, stale: result.stale };
+
+    if (ctx.format === "compact") {
+      const lines = found.matches.map(
+        (m) => `${m.table}: ${m.typeColumn} + ${m.idColumn}`
+      );
+      console.log(
+        (lines.length ? lines.join("\n") : "(no matches)") +
+          "\n" +
+          freshnessFooter(fi)
+      );
+    } else {
+      console.log(formatOutput(ctx.format, found, fi));
+    }
+  } catch (err) {
+    console.error(`Error: ${err instanceof Error ? err.message : String(err)}`);
+    process.exit(1);
+  }
+});
+
+// ---- check-index ----
+globalOptions(
+  program
+    .command("check-index <table> <columns...>")
+    .description("Check if a covering index exists for the specified columns")
+).action(async (table: string, columns: string[], opts) => {
+  try {
+    const ctx = await resolveCtx(opts);
+    const result = await ensureFreshSchema(ctx);
+    const found = checkIndex(result.schema, table, columns);
+    const fi = { verifiedAt: result.verifiedAt, refreshed: result.refreshed, stale: result.stale };
+
+    if (ctx.format === "compact") {
+      if (found.covered) {
+        console.log(`✓ Covered by index: ${found.coveringIndex?.name} (${found.coveringIndex?.columns.join(", ")})\n` + freshnessFooter(fi));
+      } else {
+        let msg = `✗ Not fully covered.\n`;
+        if (found.partialMatches.length > 0) {
+          msg += `Partial matches:\n` + found.partialMatches.map(idx => `  - ${idx.name} (${idx.columns.join(", ")})`).join("\n") + "\n";
+        }
+        console.log(msg + freshnessFooter(fi));
+      }
+    } else {
+      console.log(formatOutput(ctx.format, found, fi));
+    }
+  } catch (err) {
+    console.error(`Error: ${err instanceof Error ? err.message : String(err)}`);
+    process.exit(1);
+  }
+});
+
+// ---- find-orphans ----
+globalOptions(
+  program
+    .command("find-orphans")
+    .description("Find tables with no incoming or outgoing foreign keys")
+).action(async (opts) => {
+  try {
+    const ctx = await resolveCtx(opts);
+    const result = await ensureFreshSchema(ctx);
+    const found = findOrphans(result.schema);
+    const fi = { verifiedAt: result.verifiedAt, refreshed: result.refreshed, stale: result.stale };
+
+    if (ctx.format === "compact") {
+      console.log(
+        (found.orphans.length ? found.orphans.join("\n") : "(no orphans)") +
+          "\n" +
+          freshnessFooter(fi)
+      );
+    } else {
+      console.log(formatOutput(ctx.format, found, fi));
+    }
+  } catch (err) {
+    console.error(`Error: ${err instanceof Error ? err.message : String(err)}`);
     process.exit(1);
   }
 });

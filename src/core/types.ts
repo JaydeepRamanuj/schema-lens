@@ -149,11 +149,55 @@ export interface FindColumnsResult {
   matches: Array<{ table: string; column: SchemaColumn }>;
 }
 
+export interface FindCommonColumnsResult {
+  tables: string[];
+  pattern?: string;
+  columns: string[]; // column names present in all specified tables
+}
+
 export interface JoinPathResult {
   from: string;
   to: string;
   path: string[] | null; // null if no FK path exists
   edges: Array<{ from: string; to: string; via: string[] }>;
+}
+
+export interface SearchSchemaMatch {
+  type: "table" | "column" | "enum";
+  location: string;
+  name: string;
+  comment?: string | null | undefined;
+  matchReason: string;
+}
+
+export interface SearchSchemaResult {
+  keyword: string;
+  matches: SearchSchemaMatch[];
+}
+
+export interface FindByTypeResult {
+  type: string;
+  matches: Array<{ table: string; column: SchemaColumn }>;
+}
+
+export interface FindPolymorphicResult {
+  matches: Array<{
+    table: string;
+    typeColumn: string;
+    idColumn: string;
+  }>;
+}
+
+export interface CheckIndexResult {
+  table: string;
+  columns: string[];
+  covered: boolean;
+  coveringIndex?: SchemaIndex | undefined;
+  partialMatches: SchemaIndex[];
+}
+
+export interface FindOrphansResult {
+  orphans: string[];
 }
 
 export interface StatusResult {

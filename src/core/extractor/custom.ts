@@ -149,7 +149,7 @@ SELECT
     WHEN 'c' THEN 'CHECK'
   END AS type,
   ARRAY(
-    SELECT a.attname
+    SELECT a.attname::text
     FROM pg_attribute a
     WHERE a.attrelid = co.conrelid
       AND a.attnum = ANY(co.conkey)
@@ -159,7 +159,7 @@ SELECT
   fc.relname AS ref_table,
   COALESCE(
     ARRAY(
-      SELECT a.attname
+      SELECT a.attname::text
       FROM pg_attribute a
       WHERE a.attrelid = co.confrelid
         AND a.attnum = ANY(co.confkey)
@@ -201,7 +201,7 @@ SELECT
   ic.relname AS name,
   ix.indisunique AS unique,
   ARRAY(
-    SELECT a.attname
+    SELECT a.attname::text
     FROM pg_attribute a
     WHERE a.attrelid = c.oid
       AND a.attnum = ANY(ix.indkey)
@@ -243,7 +243,7 @@ SELECT
   tablename AS table,
   policyname AS name,
   permissive = 'PERMISSIVE' AS permissive,
-  roles,
+  roles::text[],
   cmd,
   qual,
   with_check
@@ -256,7 +256,7 @@ const Q_ENUMS = `
 SELECT
   n.nspname AS schema,
   t.typname AS name,
-  array_agg(e.enumlabel ORDER BY e.enumsortorder) AS values
+  array_agg(e.enumlabel::text ORDER BY e.enumsortorder) AS values
 FROM pg_type t
 JOIN pg_enum e ON e.enumtypid = t.oid
 JOIN pg_namespace n ON n.oid = t.typnamespace

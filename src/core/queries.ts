@@ -15,7 +15,14 @@ import type {
   DescribeResult,
   RelatedResult,
   FindColumnsResult,
+  FindCommonColumnsResult,
   JoinPathResult,
+  SearchSchemaResult,
+  SearchSchemaMatch,
+  FindByTypeResult,
+  FindPolymorphicResult,
+  CheckIndexResult,
+  FindOrphansResult,
   EnumDef,
   IncludeSection,
 } from "./types.js";
@@ -269,6 +276,73 @@ export function findColumns(
   return { pattern, matches };
 }
 
+// --------------- findCommonColumns ---------------
+
+/**
+ * Finds columns that exist in ALL of the provided tables.
+ * Optionally filters by a pattern (substring or regex).
+ */
+export function findCommonColumns(
+  schema: NormalizedSchema,
+  tableNames: string[],
+  pattern?: string
+): FindCommonColumnsResult {
+  if (tableNames.length === 0) {
+    const res: FindCommonColumnsResult = { tables: [], columns: [] };
+    if (pattern !== undefined) res.pattern = pattern;
+    return res;
+  }
+
+  let regex: RegExp | undefined;
+  if (pattern) {
+    try {
+      regex = new RegExp(pattern, "i");
+    } catch {
+      regex = new RegExp(pattern.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i");
+    }
+  }
+
+  // Get columns for each table
+  const tableColumns = tableNames.map(rawName => {
+    const key = resolveKey(rawName);
+    const table = schema.tables[key];
+    if (!table) tableNotFound(rawName);
+    return {
+      key,
+      columns: new Set(table.columns.map(c => c.name))
+    };
+  });
+
+  // Start with the columns of the first table
+  let common = new Set(tableColumns[0]!.columns);
+
+  // Intersect with remaining tables
+  for (let i = 1; i < tableColumns.length; i++) {
+    const nextSet = tableColumns[i]!.columns;
+    const intersection = new Set<string>();
+    for (const col of common) {
+      if (nextSet.has(col)) {
+        intersection.add(col);
+      }
+    }
+    common = intersection;
+  }
+
+  // Filter by pattern if provided
+  let resultCols = Array.from(common);
+  if (regex) {
+    resultCols = resultCols.filter(c => regex!.test(c));
+  }
+
+  const result: FindCommonColumnsResult = { 
+    tables: tableColumns.map(tc => tc.key), 
+    columns: resultCols.sort() 
+  };
+  if (pattern !== undefined) result.pattern = pattern;
+  
+  return result;
+}
+
 // --------------- joinPath ---------------
 
 /**
@@ -451,4 +525,179 @@ export function buildStatus(
     tableCount: schema ? Object.keys(schema.tables).length : null,
     stale: fingerprint !== null && !dbReachable,
   };
+}
+
+// --------------- searchSchema ---------------
+
+export function searchSchema(
+  schema: NormalizedSchema,
+  keyword: string
+): SearchSchemaResult {
+  const matches: SearchSchemaMatch[] = [];
+  let regex: RegExp;
+  try {
+    regex = new RegExp(keyword, "i");
+  } catch {
+    regex = new RegExp(keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i");
+  }
+
+  const pushMatch = (
+    type: "table" | "column" | "enum",
+    location: string,
+    name: string,
+    comment: string | null | undefined,
+    matchReason: string
+  ) => {
+    matches.push({ type, location, name, comment, matchReason });
+  };
+
+  // Search tables and their columns
+  for (const [tableName, table] of Object.entries(schema.tables)) {
+    if (regex.test(tableName)) {
+      pushMatch("table", tableName, tableName, table.comment, "Table name matched");
+    } else if (table.comment && regex.test(table.comment)) {
+      pushMatch("table", tableName, tableName, table.comment, "Table comment matched");
+    }
+
+    for (const col of table.columns) {
+      if (regex.test(col.name)) {
+        pushMatch("column", `${tableName}.${col.name}`, col.name, col.comment, "Column name matched");
+      } else if (col.comment && regex.test(col.comment)) {
+        pushMatch("column", `${tableName}.${col.name}`, col.name, col.comment, "Column comment matched");
+      }
+    }
+  }
+
+  // Search enums
+  for (const [enumName, enumDef] of Object.entries(schema.enums)) {
+    if (regex.test(enumName)) {
+      pushMatch("enum", enumName, enumName, null, "Enum name matched");
+    } else {
+      for (const val of enumDef.values) {
+        if (regex.test(val)) {
+          pushMatch("enum", enumName, enumName, null, `Enum value matched: ${val}`);
+          break; // only push the enum once
+        }
+      }
+    }
+  }
+
+  return { keyword, matches };
+}
+
+// --------------- findByType ---------------
+
+export function findByType(
+  schema: NormalizedSchema,
+  typeKeyword: string
+): FindByTypeResult {
+  const matches: FindByTypeResult["matches"] = [];
+  const keywordLower = typeKeyword.toLowerCase();
+
+  for (const [tableName, table] of Object.entries(schema.tables)) {
+    for (const col of table.columns) {
+      if (col.type.toLowerCase().includes(keywordLower)) {
+        matches.push({ table: tableName, column: col });
+      }
+    }
+  }
+
+  return { type: typeKeyword, matches };
+}
+
+// --------------- findPolymorphic ---------------
+
+export function findPolymorphic(
+  schema: NormalizedSchema
+): FindPolymorphicResult {
+  const matches: FindPolymorphicResult["matches"] = [];
+
+  for (const [tableName, table] of Object.entries(schema.tables)) {
+    const colNames = new Set(table.columns.map(c => c.name));
+    
+    for (const colName of colNames) {
+      if (colName.endsWith("_type")) {
+        const prefix = colName.slice(0, -5); // remove "_type"
+        if (colNames.has(`${prefix}_id`)) {
+          matches.push({
+            table: tableName,
+            typeColumn: colName,
+            idColumn: `${prefix}_id`
+          });
+        }
+      }
+    }
+  }
+
+  return { matches };
+}
+
+// --------------- checkIndex ---------------
+
+export function checkIndex(
+  schema: NormalizedSchema,
+  tableName: string,
+  columns: string[]
+): CheckIndexResult {
+  const table = getTableSchema(schema, tableName);
+  const targetCols = columns.map(c => c.toLowerCase());
+  
+  let coveringIndex: SchemaIndex | undefined;
+  const partialMatches: SchemaIndex[] = [];
+
+  for (const idx of table.indexes) {
+    const idxCols = idx.columns.map(c => c.toLowerCase());
+    
+    // Check if index covers all requested columns in order
+    // A covering index needs the query columns to be a prefix of the index columns
+    let isCovering = true;
+    if (targetCols.length > idxCols.length) {
+      isCovering = false;
+    } else {
+      for (let i = 0; i < targetCols.length; i++) {
+        if (targetCols[i] !== idxCols[i]) {
+          isCovering = false;
+          break;
+        }
+      }
+    }
+
+    if (isCovering) {
+      coveringIndex = idx;
+      break; // Found the best possible match
+    }
+    
+    // Check for partial match (e.g. index contains at least the first queried column)
+    if (idxCols[0] === targetCols[0]) {
+      partialMatches.push(idx);
+    }
+  }
+
+  return {
+    table: tableName,
+    columns,
+    covered: !!coveringIndex,
+    coveringIndex,
+    partialMatches
+  };
+}
+
+// --------------- findOrphans ---------------
+
+export function findOrphans(
+  schema: NormalizedSchema
+): FindOrphansResult {
+  const orphans: string[] = [];
+
+  for (const [tableName, rel] of Object.entries(schema.relations)) {
+    if (rel.references.length === 0 && rel.referencedBy.length === 0) {
+      // It has no incoming or outgoing relations in the relation graph
+      // Make sure it is an actual table
+      if (schema.tables[tableName]) {
+        orphans.push(tableName);
+      }
+    }
+  }
+
+  return { orphans };
 }

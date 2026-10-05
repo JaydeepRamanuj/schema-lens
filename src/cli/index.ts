@@ -47,6 +47,7 @@ import {
 } from "./formatters.js";
 import type { OutputFormat, NormalizedSchema, IncludeSection } from "../core/types.js";
 import { COMMAND_DOCS, renderCommandDocMarkdown } from "./docs.js";
+import { startMcpServer } from "../mcp/server.js";
 
 // --------------- Shared connection + refresh helper ---------------
 
@@ -775,6 +776,21 @@ globalOptions(
     process.exit(1);
   }
 });
+
+// ---- mcp-serve ----
+program
+  .command("mcp-serve")
+  .description("Start the MCP stdio server, exposing all dbctx queries as MCP tools")
+  .option("--url <postgres-url>", "Connection URL (overrides config + env)")
+  .option("--name <profile>", "Named profile from dbctx.config.json")
+  .action(async (opts) => {
+    try {
+      await startMcpServer({ url: opts.url, name: opts.name });
+    } catch (err) {
+      console.error(`Error: ${err instanceof Error ? err.message : String(err)}`);
+      process.exit(1);
+    }
+  });
 
 // ---- docs ----
 globalOptions(

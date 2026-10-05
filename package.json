@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "description": "Local PostgreSQL schema store for coding agents",
   "type": "module",
-  "bin": { "dbctx": "./dist/cli/index.js" },
+  "bin": {
+    "dbctx": "./dist/cli/index.js"
+  },
   "scripts": {
     "build": "tsc",
     "dev": "tsx src/cli/index.ts",
@@ -12,6 +14,7 @@
     "test:integration": "vitest run --config vitest.integration.config.ts"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.1",
     "commander": "^12.0.0",
     "pg": "^8.11.0",
     "zod": "^3.23.0"

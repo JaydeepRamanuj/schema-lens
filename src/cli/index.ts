@@ -46,6 +46,7 @@ import {
   freshnessFooter,
 } from "./formatters.js";
 import type { OutputFormat, NormalizedSchema, IncludeSection } from "../core/types.js";
+import { COMMAND_DOCS, renderCommandDocMarkdown } from "./docs.js";
 
 // --------------- Shared connection + refresh helper ---------------
 
@@ -774,6 +775,50 @@ globalOptions(
     process.exit(1);
   }
 });
+
+// ---- docs ----
+globalOptions(
+  program
+    .command("docs [commandName]")
+    .description("Show detailed documentation, examples, and expected output for a specific command")
+).action(async (commandName: string | undefined, opts) => {
+  try {
+    const config = loadConfig();
+    const format = (opts.format as OutputFormat | undefined) ?? config.defaultFormat ?? "compact";
+
+    if (!commandName) {
+      // List all available docs
+      const commandsList = Object.keys(COMMAND_DOCS).join(", ");
+      if (format === "json") {
+        console.log(JSON.stringify(Object.keys(COMMAND_DOCS), null, 2));
+      } else {
+        console.log(`Available command docs: ${commandsList}\nRun 'dbctx docs <command>' for details.`);
+      }
+      return;
+    }
+
+    const doc = COMMAND_DOCS[commandName];
+    if (!doc) {
+      console.error(`Error: No documentation found for command '${commandName}'.`);
+      process.exit(1);
+    }
+
+    if (format === "json") {
+      console.log(JSON.stringify(doc, null, 2));
+    } else {
+      console.log(renderCommandDocMarkdown(doc));
+    }
+  } catch (err) {
+    console.error(`Error: ${err instanceof Error ? err.message : String(err)}`);
+    process.exit(1);
+  }
+});
+
+// Add a help footer to point to docs
+program.addHelpText('after', `
+Tip: For detailed usage, examples, and output formats for any command, run:
+  dbctx docs <command>
+`);
 
 // --------------- Run ---------------
 

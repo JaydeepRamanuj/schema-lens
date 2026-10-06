@@ -1,0 +1,11 @@
+# Ignore source and development files from npm publish
+src/
+test/
+*.config.ts
+vitest.config.ts
+vitest.integration.config.ts
+schema_context_tool.md
+tsconfig.json
+.gitignore
+*.env
+*.log

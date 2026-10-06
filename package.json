@@ -1,14 +1,36 @@
 {
   "name": "dbctx",
   "version": "0.1.0",
-  "description": "Local PostgreSQL schema store for coding agents",
+  "description": "Local PostgreSQL schema store for coding agents — fast, offline-capable, always-fresh.",
+  "keywords": ["postgresql", "postgres", "schema", "mcp", "ai", "agents", "cli", "developer-tools"],
+  "author": "jdr-topia",
+  "license": "MIT",
+  "repository": { "type": "git", "url": "https://github.com/jdr-topia/dbctx" },
+  "homepage": "https://github.com/jdr-topia/dbctx#readme",
+  "bugs": { "url": "https://github.com/jdr-topia/dbctx/issues" },
   "type": "module",
+  "engines": { "node": ">=18.0.0" },
   "bin": {
     "dbctx": "./dist/cli/index.js"
   },
+  "exports": {
+    ".": "./dist/core/index.js",
+    "./cli": "./dist/cli/index.js",
+    "./mcp": "./dist/mcp/server.js"
+  },
+  "files": [
+    "dist/",
+    "docs/",
+    "skills/",
+    "README.md",
+    "LICENSE",
+    "dbctx.config.json.example"
+  ],
   "scripts": {
     "build": "tsc",
     "dev": "tsx src/cli/index.ts",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test && npm run build",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:integration": "vitest run --config vitest.integration.config.ts"

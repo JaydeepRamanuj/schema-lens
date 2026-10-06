@@ -25,14 +25,28 @@ Add the following to your agent's MCP configuration file. Common locations:
 | Cursor | `.cursor/mcp.json` (workspace) or `~/.cursor/mcp.json` (global) |
 | Antigravity / Gemini IDE | Agent settings → MCP Servers |
 
-#### Using the default profile (recommended)
+#### Using `npx` (recommended — no clone required)
+
+```json
+{
+  "mcpServers": {
+    "dbctx": {
+      "command": "npx",
+      "args": ["dbctx", "mcp-serve"],
+      "env": {}
+    }
+  }
+}
+```
+
+#### Using the default profile (from a local build)
 
 ```json
 {
   "mcpServers": {
     "dbctx": {
       "command": "node",
-      "args": ["/absolute/path/to/schema-context-tool/dist/cli/index.js", "mcp-serve"],
+      "args": ["/absolute/path/to/dbctx/dist/cli/index.js", "mcp-serve"],
       "env": {}
     }
   }
@@ -45,20 +59,12 @@ Add the following to your agent's MCP configuration file. Common locations:
 {
   "mcpServers": {
     "dbctx-prod": {
-      "command": "node",
-      "args": [
-        "/absolute/path/to/schema-context-tool/dist/cli/index.js",
-        "mcp-serve",
-        "--name", "prod"
-      ]
+      "command": "npx",
+      "args": ["dbctx", "mcp-serve", "--name", "prod"]
     },
     "dbctx-staging": {
-      "command": "node",
-      "args": [
-        "/absolute/path/to/schema-context-tool/dist/cli/index.js",
-        "mcp-serve",
-        "--name", "staging"
-      ]
+      "command": "npx",
+      "args": ["dbctx", "mcp-serve", "--name", "staging"]
     }
   }
 }
@@ -70,19 +76,21 @@ Add the following to your agent's MCP configuration file. Common locations:
 {
   "mcpServers": {
     "dbctx": {
-      "command": "node",
-      "args": [
-        "/absolute/path/to/schema-context-tool/dist/cli/index.js",
-        "mcp-serve",
-        "--url", "postgresql://user:password@localhost:5432/mydb"
-      ]
+      "command": "npx",
+      "args": ["dbctx", "mcp-serve"],
+      "env": {
+        "DBCTX_URL": "postgresql://user:password@localhost:5432/mydb"
+      }
     }
   }
 }
 ```
 
-> **Note:** You can also set `DBCTX_URL` as an environment variable in the `"env"` 
-> block instead of passing `--url` to avoid putting credentials in the config file.
+> **Note:** Use `DBCTX_URL` as an environment variable in the `"env"` block
+> instead of `--url` to avoid putting credentials in the config file.
+
+> **Global cache:** Set `DBCTX_GLOBAL=1` in the `"env"` block to use the shared
+> home-directory cache (`~/.dbctx/cache/`) instead of a project-local one.
 
 ---
 
@@ -95,10 +103,10 @@ All tools return a JSON object with a `_meta` field containing:
 | Tool | Description |
 |---|---|
 | `list_tables` | List all tables/views, with optional name filter |
-| `describe` | Full structural detail (columns, constraints, indexes, FKs, policies, triggers) for one or more tables |
+| `describe_tables` | Full structural detail (columns, constraints, indexes, FKs, policies, triggers) for one or more tables |
 | `get_columns` | All columns for a single table |
 | `get_column_constraints` | Constraints touching specific columns |
-| `related` | FK neighbors of a table (BFS, configurable depth) |
+| `get_related_tables` | FK neighbors of a table (BFS, configurable depth) |
 | `find_columns` | Find columns by name pattern across all tables |
 | `find_common_columns` | Columns that exist in ALL of the given tables |
 | `join_path` | Shortest FK path between two tables |
@@ -109,7 +117,7 @@ All tools return a JSON object with a `_meta` field containing:
 | `find_polymorphic` | Scan for polymorphic association patterns (`*_type` + `*_id`) |
 | `check_index` | Check if a covering index exists for a set of columns |
 | `find_orphans` | Find tables with no FK relationships |
-| `status` | Snapshot age, DB reachability, table count |
+| `get_status` | Snapshot age, DB reachability, table count |
 
 ### Multi-database support
 
@@ -153,3 +161,13 @@ npx tsx src/cli/index.ts mcp-serve --name myprofile
 
 The server logs diagnostic output to **stderr** only. stdout is reserved for
 the MCP JSON-RPC protocol.
+
+---
+
+## Environment Variables
+
+| Variable | Description |
+|---|---|
+| `DBCTX_URL` | PostgreSQL connection URL (overrides config file and `--url` flag) |
+| `DBCTX_CONFIG` | Path to a custom `dbctx.config.json` file |
+| `DBCTX_GLOBAL` | Set to `1` to use the global cache (`~/.dbctx/cache/`) instead of a project-local one |

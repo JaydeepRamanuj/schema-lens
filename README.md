@@ -1,14 +1,14 @@
-# dbctx
+# schema-lens
 
 **Local PostgreSQL schema store for coding agents — fast, offline-capable, always-fresh.**
 
-`dbctx` caches your database schema locally and serves accurate, structured answers in milliseconds. Instead of your AI agent firing multiple slow SQL introspection queries per task, it calls one fast local command and gets back exactly what it needs.
+`schema-lens` caches your database schema locally and serves accurate, structured answers in milliseconds. Instead of your AI agent firing multiple slow SQL introspection queries per task, it calls one fast local command and gets back exactly what it needs.
 
 ---
 
 ## Why
 
-| Without `dbctx` | With `dbctx` |
+| Without `schema-lens` | With `schema-lens` |
 |---|---|
 | Agent guesses column names | Agent looks them up |
 | 5–10 DB round-trips per task | 1 local cache read |

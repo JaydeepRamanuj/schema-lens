@@ -89,7 +89,11 @@ export async function readSchema(
   if (!fs.existsSync(p)) return null;
   try {
     const raw = await fsPromises.readFile(p, "utf8");
-    return JSON.parse(raw) as NormalizedSchema;
+    const parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed !== "object" || !parsed.meta || !parsed.meta.snapshotVersion) {
+      return null;
+    }
+    return parsed as NormalizedSchema;
   } catch {
     return null;
   }
@@ -114,7 +118,11 @@ export async function readFingerprint(
   if (!fs.existsSync(p)) return null;
   try {
     const raw = await fsPromises.readFile(p, "utf8");
-    return JSON.parse(raw) as Fingerprint;
+    const parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed !== "object" || !parsed.verifiedAt) {
+      return null;
+    }
+    return parsed as Fingerprint;
   } catch {
     return null;
   }

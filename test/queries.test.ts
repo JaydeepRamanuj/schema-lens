@@ -19,6 +19,12 @@ import {
   getEnums,
   getPolicies,
   buildStatus,
+  findCommonColumns,
+  searchSchema,
+  findByType,
+  findPolymorphic,
+  checkIndex,
+  findOrphans,
 } from "../src/core/queries.js";
 
 // --------------- Load fixture ---------------
@@ -265,3 +271,58 @@ describe("buildStatus", () => {
     expect(status.stale).toBe(true);
   });
 });
+
+// --------------- findCommonColumns ---------------
+
+describe("findCommonColumns", () => {
+  it("finds common columns", () => {
+    const result = findCommonColumns(fixture, ["public.users", "public.orders"]);
+    expect(Array.isArray(result.columns)).toBe(true);
+  });
+});
+
+// --------------- searchSchema ---------------
+
+describe("searchSchema", () => {
+  it("searches the schema", () => {
+    const result = searchSchema(fixture, "user");
+    expect(result.matches.length).toBeGreaterThan(0);
+  });
+});
+
+// --------------- findByType ---------------
+
+describe("findByType", () => {
+  it("finds by type", () => {
+    const result = findByType(fixture, "uuid");
+    expect(Array.isArray(result.matches)).toBe(true);
+  });
+});
+
+// --------------- findPolymorphic ---------------
+
+describe("findPolymorphic", () => {
+  it("finds polymorphic associations", () => {
+    const result = findPolymorphic(fixture);
+    expect(Array.isArray(result.matches)).toBe(true);
+  });
+});
+
+// --------------- checkIndex ---------------
+
+describe("checkIndex", () => {
+  it("checks an index", () => {
+    const result = checkIndex(fixture, "public.orders", ["user_id"]);
+    expect(result.covered).toBeDefined();
+  });
+});
+
+// --------------- findOrphans ---------------
+
+describe("findOrphans", () => {
+  it("finds orphaned tables", () => {
+    const result = findOrphans(fixture);
+    expect(Array.isArray(result.orphans)).toBe(true);
+  });
+});
+

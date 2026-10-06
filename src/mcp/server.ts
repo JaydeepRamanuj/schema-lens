@@ -29,7 +29,7 @@ import {
   acquireLock,
   deriveConnectionId,
 } from "../core/store.js";
-import { checkFreshness, buildFingerprint } from "../core/freshness.js";
+import { ensureFreshSchema, type ConnectionContext } from "../core/refresh.js";
 import {
   listTables,
   describe,
@@ -52,17 +52,10 @@ import type { NormalizedSchema, IncludeSection } from "../core/types.js";
 
 // --------------- Connection context ---------------
 
-interface McpConnectionContext {
-  url: string;
-  schemas: string[];
-  connectionId: string;
-  ttlSeconds: number;
-}
-
 function buildConnectionContext(opts: {
   url?: string;
   name?: string;
-}): McpConnectionContext {
+}): ConnectionContext {
   const config = loadConfig();
   const connOpts: { url?: string; name?: string } = {};
   if (opts.url !== undefined) connOpts.url = opts.url;
@@ -74,127 +67,8 @@ function buildConnectionContext(opts: {
     schemas: conn.schemas,
     connectionId: deriveConnectionId(conn.url),
     ttlSeconds: config.ttlSeconds ?? 5,
+    isGlobal: process.env["DBCTX_GLOBAL"] === "1",
   };
-}
-
-// --------------- Schema refresh helpers ---------------
-
-async function makeClient(url: string): Promise<pg.Client> {
-  const client = new pg.Client({ connectionString: url });
-  await client.connect();
-  return client;
-}
-
-interface RefreshResult {
-  schema: NormalizedSchema;
-  refreshed: boolean;
-  stale: boolean;
-  staleReason?: string;
-  verifiedAt: string;
-}
-
-async function ensureFreshSchema(ctx: McpConnectionContext): Promise<RefreshResult> {
-  const storedFp = await readFingerprint(ctx.connectionId);
-  const storedSchema = await readSchema(ctx.connectionId);
-
-  if (!storedSchema) {
-    return await doFullRefresh(ctx);
-  }
-
-  let client: pg.Client | null = null;
-  try {
-    client = await makeClient(ctx.url);
-  } catch {
-    // DB unreachable — serve stale cache
-    return {
-      schema: storedSchema,
-      refreshed: false,
-      stale: true,
-      staleReason: "db unreachable",
-      verifiedAt: storedFp?.verifiedAt ?? new Date().toISOString(),
-    };
-  }
-
-  try {
-    const { result, newFingerprint } = await checkFreshness(
-      client,
-      ctx.schemas,
-      storedFp,
-      ctx.ttlSeconds
-    );
-
-    if (result.wasDbUnreachable) {
-      return {
-        schema: storedSchema,
-        refreshed: false,
-        stale: true,
-        staleReason: "db unreachable",
-        verifiedAt: storedFp?.verifiedAt ?? new Date().toISOString(),
-      };
-    }
-
-    if (result.isFresh) {
-      if (newFingerprint) {
-        await writeFingerprint(ctx.connectionId, newFingerprint);
-      }
-      return {
-        schema: storedSchema,
-        refreshed: false,
-        stale: false,
-        verifiedAt: newFingerprint?.verifiedAt ?? storedFp?.verifiedAt ?? new Date().toISOString(),
-      };
-    }
-
-    return await doRefreshWithClient(client, ctx, newFingerprint);
-  } finally {
-    await client.end().catch(() => undefined);
-  }
-}
-
-async function doFullRefresh(ctx: McpConnectionContext): Promise<RefreshResult> {
-  const client = await makeClient(ctx.url);
-  try {
-    return await doRefreshWithClient(client, ctx, null);
-  } finally {
-    await client.end().catch(() => undefined);
-  }
-}
-
-async function doRefreshWithClient(
-  client: pg.Client,
-  ctx: McpConnectionContext,
-  existingFp: import("../core/types.js").Fingerprint | null
-): Promise<RefreshResult> {
-  const release = await acquireLock(ctx.connectionId);
-  try {
-    const rawData = await extract(client, ctx.schemas);
-    await writeRaw(ctx.connectionId, rawData);
-
-    const dbRes = await client.query<{ current_database: string }>(
-      "SELECT current_database()"
-    );
-    const dbName = dbRes.rows[0]?.current_database ?? "unknown";
-
-    const schema = normalize(rawData, {
-      connectionId: ctx.connectionId,
-      dbName,
-      generatedAt: new Date().toISOString(),
-    });
-
-    const fp = await buildFingerprint(client, ctx.schemas);
-
-    await writeSchema(ctx.connectionId, schema);
-    await writeFingerprint(ctx.connectionId, fp);
-
-    return {
-      schema,
-      refreshed: true,
-      stale: false,
-      verifiedAt: fp.verifiedAt,
-    };
-  } finally {
-    await release();
-  }
 }
 
 // --------------- Tool response helper ---------------
@@ -256,9 +130,9 @@ export async function startMcpServer(opts: {
     }
   );
 
-  // ---- describe ----
+  // ---- describe_tables ----
   server.tool(
-    "describe",
+    "describe_tables",
     "Return full structural detail for one or more tables: columns, constraints, indexes, foreign keys, policies, and triggers.",
     {
       tables: z
@@ -351,9 +225,9 @@ export async function startMcpServer(opts: {
     }
   );
 
-  // ---- related ----
+  // ---- get_related_tables ----
   server.tool(
-    "related",
+    "get_related_tables",
     "Return tables that are directly connected to the given table via foreign keys (both incoming and outgoing), up to a configurable BFS depth.",
     {
       table: z.string().describe("Root table name"),
@@ -465,8 +339,12 @@ export async function startMcpServer(opts: {
           ? buildConnectionContext({ name: connection_name })
           : ctx;
         const result = await ensureFreshSchema(resolvedCtx);
+        const jp = joinPath(result.schema, from, to);
+        if (!jp.path) {
+          return err(`No FK path found between ${from} and ${to}`);
+        }
         return ok({
-          ...joinPath(result.schema, from, to),
+          ...jp,
           _meta: { verifiedAt: result.verifiedAt, stale: result.stale },
         });
       } catch (e) {
@@ -672,9 +550,9 @@ export async function startMcpServer(opts: {
     }
   );
 
-  // ---- status ----
+  // ---- get_status ----
   server.tool(
-    "status",
+    "get_status",
     "Return snapshot metadata: age, table count, whether the DB is reachable, and whether the cache is stale.",
     {
       connection_name: z
@@ -687,12 +565,14 @@ export async function startMcpServer(opts: {
         const resolvedCtx = connection_name
           ? buildConnectionContext({ name: connection_name })
           : ctx;
-        const fp = await readFingerprint(resolvedCtx.connectionId);
-        const schema = await readSchema(resolvedCtx.connectionId);
+        const storeOpts = { isGlobal: resolvedCtx.isGlobal };
+        const fp = await readFingerprint(resolvedCtx.connectionId, storeOpts);
+        const schema = await readSchema(resolvedCtx.connectionId, storeOpts);
 
         let dbReachable = false;
         try {
-          const client = await makeClient(resolvedCtx.url);
+          const client = new pg.Client({ connectionString: resolvedCtx.url });
+          await client.connect();
           await client.query("SELECT 1");
           await client.end();
           dbReachable = true;

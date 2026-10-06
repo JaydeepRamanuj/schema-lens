@@ -454,7 +454,7 @@ export function getEnums(
   if (!name) {
     return { enums: schema.enums };
   }
-  const pattern = name.includes(".") ? name : name;
+  const pattern = name.includes(".") ? name : `public.${name}`;
   const filtered = Object.fromEntries(
     Object.entries(schema.enums).filter(
       ([key]) =>

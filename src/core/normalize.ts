@@ -31,14 +31,6 @@ function tableKey(schema: string, name: string): string {
   return `${schema}.${name}`;
 }
 
-/**
- * Resolve a possibly-bare table name to its canonical "schema.table" key.
- * If the name already contains a dot we trust it as-is.
- */
-function resolveTableKey(name: string, defaultSchema = "public"): string {
-  return name.includes(".") ? name : `${defaultSchema}.${name}`;
-}
-
 // --------------- Column normalizer ---------------
 
 function normalizeColumn(row: RawColumn): SchemaColumn {
@@ -179,11 +171,6 @@ export function normalize(
   // Initialize every table with empty relation slots
   for (const key of Object.keys(tables)) {
     relations[key] = { references: [], referencedBy: [] };
-  }
-
-  // Walk FK constraints to populate both directions
-  for (const tableEntry of Object.values(tables)) {
-    const fromKey = tableKey(tableEntry.schema, ""); // we iterate via table keys below
   }
 
   for (const [fromKey, table] of Object.entries(tables)) {

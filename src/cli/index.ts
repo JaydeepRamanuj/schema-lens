@@ -5,7 +5,8 @@
 //               → load schema → query fn → format → stdout
 // ============================================================
 
-import { Command } from "commander";
+import { createRequire } from "node:module";
+import { Command, Option } from "commander";
 import pg from "pg";
 import { loadConfig, resolveConnection } from "../core/config.js";
 import { extract } from "../core/extractor/custom.js";
@@ -20,7 +21,7 @@ import {
   deriveConnectionId,
   getStoreInfo,
 } from "../core/store.js";
-import { checkFreshness, buildFingerprint } from "../core/freshness.js";
+import { ensureFreshSchema, doFullRefresh, RefreshResult } from "../core/refresh.js";
 import {
   listTables,
   describe,
@@ -96,158 +97,24 @@ function makeFi(result: RefreshResult): FreshnessInfo {
   return fi;
 }
 
-async function makeClient(url: string): Promise<pg.Client> {
-  const client = new pg.Client({ connectionString: url });
-  await client.connect();
-  return client;
-}
-
-interface RefreshResult {
-  schema: NormalizedSchema;
-  refreshed: boolean;
-  stale: boolean;
-  staleReason?: string;
-  verifiedAt: string;
-}
-
-/**
- * Core read flow: check freshness, refresh if needed, return schema + metadata.
- */
-async function ensureFreshSchema(
-  ctx: ConnectionContext,
-  force = false
-): Promise<RefreshResult> {
-  const storeOpts = { isGlobal: ctx.isGlobal };
-  const storedFp = await readFingerprint(ctx.connectionId, storeOpts);
-  const storedSchema = await readSchema(ctx.connectionId, storeOpts);
-
-  // Force re-extract
-  if (force || !storedSchema) {
-    return await doFullRefresh(ctx);
-  }
-
-  // Try to connect and check freshness
-  let client: pg.Client | null = null;
-  try {
-    client = await makeClient(ctx.url);
-  } catch {
-    // DB unreachable — serve stale cache
-    if (storedSchema) {
-      return {
-        schema: storedSchema,
-        refreshed: false,
-        stale: true,
-        staleReason: "db unreachable",
-        verifiedAt: storedFp?.verifiedAt ?? new Date().toISOString(),
-      };
-    }
-    throw new Error(
-      "Database is unreachable and no cached snapshot exists.\n" +
-        "Run 'dbctx init' when the DB is available first."
-    );
-  }
-
-  try {
-    const { result, newFingerprint } = await checkFreshness(
-      client,
-      ctx.schemas,
-      storedFp,
-      ctx.ttlSeconds
-    );
-
-    if (result.wasDbUnreachable) {
-      return {
-        schema: storedSchema,
-        refreshed: false,
-        stale: true,
-        staleReason: "db unreachable",
-        verifiedAt: storedFp?.verifiedAt ?? new Date().toISOString(),
-      };
-    }
-
-    if (result.isFresh) {
-      // Update verifiedAt in fingerprint even if nothing changed
-      if (newFingerprint) {
-        await writeFingerprint(ctx.connectionId, newFingerprint, storeOpts);
-      }
-      return {
-        schema: storedSchema,
-        refreshed: false,
-        stale: false,
-        verifiedAt: newFingerprint?.verifiedAt ?? storedFp?.verifiedAt ?? new Date().toISOString(),
-      };
-    }
-
-    // Schema changed — re-extract
-    return await doRefreshWithClient(client, ctx, newFingerprint);
-  } finally {
-    await client.end().catch(() => undefined);
-  }
-}
-
-async function doFullRefresh(ctx: ConnectionContext): Promise<RefreshResult> {
-  const client = await makeClient(ctx.url);
-  try {
-    return await doRefreshWithClient(client, ctx, null);
-  } finally {
-    await client.end().catch(() => undefined);
-  }
-}
-
-async function doRefreshWithClient(
-  client: pg.Client,
-  ctx: ConnectionContext,
-  existingFp: import("../core/types.js").Fingerprint | null
-): Promise<RefreshResult> {
-  const storeOpts = { isGlobal: ctx.isGlobal };
-  const release = await acquireLock(ctx.connectionId, storeOpts);
-  try {
-    const rawData = await extract(client, ctx.schemas);
-    await writeRaw(ctx.connectionId, rawData, storeOpts);
-
-    // Get DB name
-    const dbRes = await client.query<{ current_database: string }>(
-      "SELECT current_database()"
-    );
-    const dbName = dbRes.rows[0]?.current_database ?? "unknown";
-
-    const schema = normalize(rawData, {
-      connectionId: ctx.connectionId,
-      dbName,
-      generatedAt: new Date().toISOString(),
-    });
-
-    const fp = await buildFingerprint(client, ctx.schemas);
-
-    await writeSchema(ctx.connectionId, schema, storeOpts);
-    await writeFingerprint(ctx.connectionId, fp, storeOpts);
-
-    return {
-      schema,
-      refreshed: true,
-      stale: false,
-      verifiedAt: fp.verifiedAt,
-    };
-  } finally {
-    await release();
-  }
-}
-
 // --------------- CLI Program ---------------
+
+const require = createRequire(import.meta.url);
+const { version } = require("../../package.json");
 
 const program = new Command();
 
 program
   .name("dbctx")
   .description("Local PostgreSQL schema store for coding agents")
-  .version("0.1.0");
+  .version(version);
 
 // Global options (inherited by all subcommands)
 const globalOptions = (cmd: Command) =>
   cmd
     .option("--url <postgres-url>", "Connection URL (overrides config + env)")
     .option("--name <profile>", "Named profile from dbctx.config.json")
-    .option("--format <format>", "Output format: json | md | compact")
+    .addOption(new Option("--format <format>", "Output format").choices(["json", "md", "compact"]))
     .option("--global", "Use the global cache directory (~/.dbctx/cache)");
 
 // ---- init ----
@@ -281,7 +148,7 @@ globalOptions(
 ).action(async (opts) => {
   try {
     const ctx = await resolveCtx(opts);
-    const result = await ensureFreshSchema(ctx, opts.force ?? true);
+    const result = await ensureFreshSchema(ctx, opts.force === true);
     const tableCount = Object.keys(result.schema.tables).length;
     console.log(
       `✓ Refreshed. ${tableCount} tables.\n  Verified at: ${result.verifiedAt}`
@@ -306,7 +173,8 @@ globalOptions(
 
     let dbReachable = false;
     try {
-      const client = await makeClient(ctx.url);
+      const client = new pg.Client({ connectionString: ctx.url });
+      await client.connect();
       await client.query("SELECT 1");
       await client.end();
       dbReachable = true;

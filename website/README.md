@@ -1,43 +1,45 @@
-# Website
+# website-next
 
-This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+This is a Next.js application generated with
+[Create Fumadocs](https://github.com/fuma-nama/fumadocs).
 
-## Installation
-
-```bash
-npm install
-```
-
-**Note**: feel free to use the package manager of your choice.
-
-## Local Development
+Run development server:
 
 ```bash
-npm run start
+npm run dev
+# or
+pnpm dev
+# or
+yarn dev
 ```
 
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
+Open http://localhost:3000 with your browser to see the result.
 
-## Build
+## Explore
 
-```bash
-npm run build
-```
+In the project, you can see:
 
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
+- `lib/source.ts`: Code for content source adapter, [`loader()`](https://fumadocs.dev/docs/headless/source-api) provides the interface to access your content.
+- `lib/layout.shared.tsx`: Shared options for layouts, optional but preferred to keep.
 
-## Deployment
+| Route                     | Description                                            |
+| ------------------------- | ------------------------------------------------------ |
+| `app/(home)`              | The route group for your landing page and other pages. |
+| `app/docs`                | The documentation layout and pages.                    |
+| `app/api/search/route.ts` | The Route Handler for search.                          |
 
-Using SSH:
+### Fumadocs MDX
 
-```bash
-USE_SSH=true npm run deploy
-```
+Collections are defined with the [Macro API](https://fumadocs.dev/docs/mdx/macro) in `lib/source.ts`.
 
-Not using SSH:
+Read the [Introduction](https://fumadocs.dev/docs/mdx) for further details.
 
-```bash
-GIT_USER=<Your GitHub username> npm run deploy
-```
+## Learn More
 
-If you are using GitHub Pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
+To learn more about Next.js and Fumadocs, take a look at the following
+resources:
+
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js
+  features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [Fumadocs](https://fumadocs.dev) - learn about Fumadocs

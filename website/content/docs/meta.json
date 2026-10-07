@@ -1,0 +1,13 @@
+{
+  "pages": [
+    "intro",
+    "getting-started",
+    "configuration",
+    "commands",
+    "output-formats",
+    "schema-data-model",
+    "snapshot-freshness",
+    "mcp-server",
+    "skills"
+  ]
+}

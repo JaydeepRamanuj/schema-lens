@@ -146,8 +146,24 @@ export default function InteractiveTerminal() {
   const [mode, setMode] = useState<Mode>('cli');
   const [displayedCommand, setDisplayedCommand] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
   const activeData = scenarios[scenario].modes[mode];
+
+  // Auto-play interval
+  useEffect(() => {
+    if (!isAutoPlaying) return;
+
+    const intervalId = setInterval(() => {
+      setScenario((current) => {
+        const keys = Object.keys(scenarios) as ScenarioId[];
+        const nextIndex = (keys.indexOf(current) + 1) % keys.length;
+        return keys[nextIndex];
+      });
+    }, 5000);
+
+    return () => clearInterval(intervalId);
+  }, [isAutoPlaying]);
 
   useEffect(() => {
     setDisplayedCommand('');
@@ -181,7 +197,10 @@ export default function InteractiveTerminal() {
             
             <div className={styles.controlsBar}>
               <div className={styles.selectWrapper}>
-                <Select value={scenario} onValueChange={(val) => setScenario(val as ScenarioId)}>
+                <Select value={scenario} onValueChange={(val) => {
+                  setScenario(val as ScenarioId);
+                  setIsAutoPlaying(false);
+                }}>
                   <SelectTrigger className="w-[220px]">
                     <SelectValue />
                   </SelectTrigger>
@@ -196,7 +215,10 @@ export default function InteractiveTerminal() {
               </div>
 
               <div className={styles.tabsWrapper}>
-                <Tabs value={mode} onValueChange={(val) => setMode(val as Mode)}>
+                <Tabs value={mode} onValueChange={(val) => {
+                  setMode(val as Mode);
+                  setIsAutoPlaying(false);
+                }}>
                   <TabsList>
                     <TabsTrigger value="cli">CLI</TabsTrigger>
                     <TabsTrigger value="mcp_json">MCP JSON</TabsTrigger>

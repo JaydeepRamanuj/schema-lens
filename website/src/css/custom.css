@@ -1,0 +1,137 @@
+/* 1. Import Tailwind Theme & Utilities */
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+/* 2. Sync Dark Mode with Docusaurus */
+@custom-variant dark (&:is([data-theme="dark"] *));
+
+/* 3. Prevent Tailwind from hijacking the Docusaurus container */
+.container {
+  padding-left: var(--ifm-spacing-horizontal, 15px) !important;
+  padding-right: var(--ifm-spacing-horizontal, 15px) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* shadcn/Prisma inspired ultra-dark glossy design tokens */
+:root {
+  /* Default to dark theme tokens */
+  --background: 240 10% 4.9%;            /* #0c0d0f - Prisma-like very dark grey */
+  --card: 240 10% 6.5%;                  /* #111215 - Card container */
+  --card-foreground: 0 0% 98%;           /* #fafafa */
+  --primary: 187 85% 53%;                /* #22d3ee - Prisma cyan accent */
+  --primary-dark: 187 100% 40%;
+  --muted-foreground: 240 5% 64.9%;      /* #a1a1aa - Muted body text */
+  --border: 240 3.7% 15.9%;              /* #27272a - Clean subtle borders */
+  --radius: 0.5rem;                      
+}
+
+html, body {
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) hsl(var(--background));
+}
+
+/* Custom Sleek Scrollbar for Webkit (Chrome/Edge/Safari) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+[data-theme='dark'] {
+  --ifm-background-color: hsl(var(--background));
+  --ifm-navbar-background-color: rgba(12, 13, 15, 0.8); /* Semi-transparent for blur */
+  --ifm-card-background-color: hsl(var(--card));
+  
+  --ifm-color-primary: hsl(var(--primary));
+  --ifm-color-primary-dark: hsl(var(--primary-dark));
+  
+  --ifm-font-color-base: hsl(var(--muted-foreground));
+  --ifm-heading-color: hsl(var(--card-foreground));
+  
+  --ifm-toc-border-color: hsl(var(--border));
+  --ifm-hr-border-color: hsl(var(--border));
+  
+  --ifm-code-font-size: 88%;
+  --ifm-font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --ifm-font-family-monospace: 'Fira Code', 'JetBrains Mono', monospace;
+}
+
+/* Navbar glassmorphism */
+.navbar {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.05) !important;
+  box-shadow: none !important;
+}
+
+/* Sidebar & TOC overrides for Prisma feel */
+.menu__link {
+  border-radius: 6px !important;
+  transition: all 0.2s ease;
+}
+
+.menu__link--active {
+  background-color: rgba(255,255,255,0.04) !important;
+  border-left: 3px solid hsl(var(--primary));
+  color: white !important;
+}
+
+.table-of-contents__link--active {
+  color: hsl(var(--primary)) !important;
+  border-left-color: hsl(var(--primary)) !important;
+}
+
+/* Announcement Bar - Vibrant Gradient */
+.announcementBar_node_modules-\@docusaurus-theme-classic-lib-theme-AnnouncementBar-styles-module {
+  background: linear-gradient(90deg, #14b8a6, #3b82f6) !important;
+  color: white !important;
+  border-bottom: none !important;
+  font-weight: 500;
+  box-shadow: 0 4px 14px rgba(20, 184, 166, 0.4);
+}
+
+/* Content Area - Clean, full-width look, no boxy card */
+main > .container {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 2rem 0;
+}
+
+.markdown > h1 {
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: white;
+}
+
+.markdown > h2, .markdown > h3 {
+  font-weight: 700;
+  color: white;
+}
+
+/* Code Blocks */
+.theme-code-block {
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  border-radius: 8px;
+}
+
+/* Footer Override */
+.footer {
+  background-color: hsl(var(--background)) !important;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}

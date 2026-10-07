@@ -3,3 +3,8 @@ node_modules/
 .schema-cache/
 dbctx.config.json
 *.env
+
+# Docusaurus / Website
+website/.docusaurus/
+website/build/
+website/node_modules/

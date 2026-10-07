@@ -1,6 +1,7 @@
 /* 1. Import Tailwind Theme & Utilities */
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities);
+@source "../components";
 
 /* 2. Sync Dark Mode with Docusaurus */
 @custom-variant dark (&:is([data-theme="dark"] *));

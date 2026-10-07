@@ -1,0 +1,74 @@
+/* Shadcn overrides to beat Docusaurus global styles */
+.shadcn-tabs-list {
+  background-color: #18181b !important; /* zinc-900 */
+  padding: 4px !important;
+  border-radius: 6px !important;
+  border: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.shadcn-tabs-trigger {
+  background-color: transparent !important;
+  color: #a1a1aa !important; /* zinc-400 */
+  border: none !important;
+  outline: none !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+  border-radius: 4px !important;
+  padding: 6px 12px !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer !important;
+}
+
+.shadcn-tabs-trigger[data-state="active"] {
+  background-color: #27272a !important; /* zinc-800 */
+  color: #fafafa !important; /* zinc-50 */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+.shadcn-select-trigger {
+  background-color: #09090b !important; /* zinc-950 */
+  color: #d4d4d8 !important; /* zinc-300 */
+  border: 1px solid #3f3f46 !important; /* zinc-700 */
+  border-radius: 6px !important;
+  padding: 8px 12px !important;
+  font-size: 0.875rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  outline: none !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+}
+
+.shadcn-select-content {
+  background-color: #09090b !important; /* zinc-950 */
+  border: 1px solid #3f3f46 !important; /* zinc-700 */
+  border-radius: 6px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
+  padding: 4px !important;
+  margin-top: 4px !important;
+  color: #e4e4e7 !important; /* zinc-200 */
+  z-index: 50 !important;
+}
+
+.shadcn-select-item {
+  border: none !important;
+  background: transparent !important;
+  padding: 6px 8px 6px 32px !important;
+  border-radius: 4px !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  font-size: 0.875rem !important;
+  color: #e4e4e7 !important;
+}
+
+.shadcn-select-item:hover {
+  background-color: #27272a !important; /* zinc-800 */
+  color: #fafafa !important;
+}

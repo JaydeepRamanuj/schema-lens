@@ -7,6 +7,7 @@ import Heading from '@theme/Heading';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import InteractiveTerminal from '../components/InteractiveTerminal';
 
 import styles from './index.module.css';
 
@@ -162,6 +163,7 @@ export default function Home() {
         <HeroSection />
         <main>
           <SetupSection />
+          <InteractiveTerminal />
           <ComparisonSection />
           <FeaturesSection />
         </main>

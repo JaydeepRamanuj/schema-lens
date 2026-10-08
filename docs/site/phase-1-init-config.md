@@ -23,9 +23,9 @@ Edit `website/docusaurus.config.ts` to reflect the `schema-lens` branding.
 **Key updates:**
 - `title`: `'schema-lens'`
 - `tagline`: `'Stop guessing your schema. Let your AI agent look it up.'`
-- `url`: `'https://jdr-topia.github.io'`
+- `url`: `'https://JaydeepRamanuj.github.io'`
 - `baseUrl`: `'/schema-lens/'`
-- `organizationName`: `'jdr-topia'`
+- `organizationName`: `'JaydeepRamanuj'`
 - `projectName`: `'schema-lens'`
 - `trailingSlash`: `false`
 
@@ -36,4 +36,4 @@ Edit `website/docusaurus.config.ts` to reflect the `schema-lens` branding.
 
 **Theme Config / Footer:**
 - Links to GitHub, License, and important documentation sections (Commands, Configuration, MCP Server).
-- Copyright: `Copyright © ${new Date().getFullYear()} jdr-topia.`
+- Copyright: `Copyright © ${new Date().getFullYear()} Jaydeep Ramanuj.`

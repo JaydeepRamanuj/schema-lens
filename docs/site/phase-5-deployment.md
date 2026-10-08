@@ -59,5 +59,5 @@ jobs:
 - Run `npm run build` locally in `website/` to ensure Docusaurus's strict broken-link checker passes.
 - Commit all changes to `main`.
 - Wait for the GitHub Action to complete.
-- Verify the site is live at `https://jdr-topia.github.io/schema-lens`.
+- Verify the site is live at `https://JaydeepRamanuj.github.io/schema-lens`.
 - Ensure the "Website" link in the GitHub repository's About section is updated to point to this URL.

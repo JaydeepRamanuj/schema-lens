@@ -6,7 +6,7 @@ title: "Schema Data Model"
 
 This document describes the TypeScript types that form the normalized snapshot stored in `schema.json`. Understanding these types is useful when consuming `--format json` output or building tooling on top of `dbctx`.
 
-All types are defined in [`src/core/types.ts`](https://github.com/jdr-topia/schema-lens/blob/main/src/core/types.ts).
+All types are defined in [`src/core/types.ts`](https://github.com/JaydeepRamanuj/schema-lens/blob/main/src/core/types.ts).
 
 ---
 

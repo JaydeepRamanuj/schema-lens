@@ -157,7 +157,7 @@ function Header() {
 
         <div className="flex items-center gap-2.5">
           <a
-            href="https://github.com/jdr-topia/schema-lens"
+            href="https://github.com/JaydeepRamanuj/schema-lens"
             target="_blank"
             rel="noopener"
             className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1d1f28] hover:bg-[#272a33] text-[#bcc9cd] hover:text-[#e1e2ee] transition-all font-mono text-[11px]"
@@ -242,7 +242,7 @@ function HeroSection() {
           </button>
 
           <a
-            href="https://github.com/jdr-topia/schema-lens"
+            href="https://github.com/JaydeepRamanuj/schema-lens"
             target="_blank"
             rel="noopener"
             className="flex items-center gap-2 px-4 py-3 rounded-lg bg-[#1d1f28] hover:bg-[#272a33] transition-colors text-[14px] text-[#bcc9cd] hover:text-[#e1e2ee]"
@@ -1024,7 +1024,7 @@ function BottomCTA() {
             {copied ? <Check size={16} /> : <Terminal size={16} />}
             <span>{copied ? "Copied!" : "npm i -g @schemalens/dbctx"}</span>
           </button>
-          <a href="https://github.com/jdr-topia/schema-lens" target="_blank" rel="noopener" className="flex items-center gap-2 px-6 py-3.5 rounded-lg bg-[#272a33] hover:bg-[#32343e] text-[#e1e2ee] font-semibold text-[14px] transition-colors">
+          <a href="https://github.com/JaydeepRamanuj/schema-lens" target="_blank" rel="noopener" className="flex items-center gap-2 px-6 py-3.5 rounded-lg bg-[#272a33] hover:bg-[#32343e] text-[#e1e2ee] font-semibold text-[14px] transition-colors">
             <Star size={16} className="text-[#4cd7f6]" />
             <span>Star on GitHub (1.2k)</span>
           </a>
@@ -1073,7 +1073,7 @@ function Footer() {
             },
             {
               heading: "Community",
-              links: [["GitHub", "https://github.com/jdr-topia/schema-lens"], ["Discord", "https://discord.com"], ["X (Twitter)", "https://twitter.com"], ["Security Policy", "/docs/intro"]],
+              links: [["GitHub", "https://github.com/JaydeepRamanuj/schema-lens"], ["Discord", "https://discord.com"], ["X (Twitter)", "https://twitter.com"], ["Security Policy", "/docs/intro"]],
             },
           ].map(({ heading, links }) => (
             <div key={heading}>

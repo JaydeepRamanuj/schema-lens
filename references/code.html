@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "surface-dim": "#10131c",
+          "on-error": "#690005",
+          "on-secondary-container": "#e6ecff",
+          "surface-container-highest": "#32343e",
+          "surface-variant": "#32343e",
+          "surface-container-low": "#191b24",
+          "tertiary": "#4edea3",
+          "surface-tint": "#4cd7f6",
+          "surface-container": "#1d1f28",
+          "on-primary": "#003640",
+          "on-primary-container": "#00424f",
+          "secondary-fixed-dim": "#adc6ff",
+          "on-background": "#e1e2ee",
+          "error-container": "#93000a",
+          "secondary-fixed": "#d8e2ff",
+          "inverse-surface": "#e1e2ee",
+          "on-secondary-fixed-variant": "#004395",
+          "on-secondary-fixed": "#001a42",
+          "on-surface": "#e1e2ee",
+          "surface-container-high": "#272a33",
+          "on-tertiary-fixed-variant": "#005236",
+          "surface-container-lowest": "#0b0e16",
+          "secondary": "#adc6ff",
+          "background": "#10131c",
+          "on-primary-fixed": "#001f26",
+          "primary-container": "#06b6d4",
+          "on-tertiary-fixed": "#002113",
+          "on-primary-fixed-variant": "#004e5c",
+          "on-error-container": "#ffdad6",
+          "outline": "#869397",
+          "primary-fixed": "#acedff",
+          "primary": "#4cd7f6",
+          "on-surface-variant": "#bcc9cd",
+          "primary-fixed-dim": "#4cd7f6",
+          "inverse-on-surface": "#2e303a",
+          "secondary-container": "#0566d9",
+          "tertiary-fixed": "#6ffbbe",
+          "on-tertiary-container": "#00452e",
+          "tertiary-container": "#1bbd85",
+          "tertiary-fixed-dim": "#4edea3",
+          "inverse-primary": "#00687a",
+          "surface": "#10131c",
+          "surface-bright": "#363943",
+          "outline-variant": "#3d494c",
+          "on-secondary": "#002e6a",
+          "on-tertiary": "#003824",
+          "error": "#ffb4ab"
+        },
+        "borderRadius": {
+          "DEFAULT": "0.25rem",
+          "lg": "0.5rem",
+          "xl": "0.75rem",
+          "full": "9999px"
+        },
+        "spacing": {
+          "gutter-mobile": "1rem",
+          "space-lg": "1.5rem",
+          "space-xs": "0.25rem",
+          "space-md": "1rem",
+          "space-sm": "0.5rem",
+          "margin": "5rem",
+          "margin-tablet": "3.5rem",
+          "gutter": "1.5rem",
+          "margin-mobile": "1.5rem",
+          "space-xl": "2rem"
+        },
+        "fontFamily": {
+          "display-hero": [
+            "Geist"
+          ],
+          "headline-md": [
+            "Geist"
+          ],
+          "display-hero-mobile": [
+            "Geist"
+          ],
+          "badge-caps": [
+            "Geist Mono"
+          ],
+          "headline-lg": [
+            "Geist"
+          ],
+          "caption-caps": [
+            "Geist"
+          ],
+          "headline-sm": [
+            "Geist"
+          ],
+          "headline-xl": [
+            "Geist"
+          ],
+          "body-sm": [
+            "Geist"
+          ],
+          "code-base": [
+            "Geist Mono"
+          ],
+          "body-lg": [
+            "Geist"
+          ],
+          "headline-xl-mobile": [
+            "Geist"
+          ],
+          "code-sm": [
+            "Geist Mono"
+          ],
+          "body-base": [
+            "Geist"
+          ]
+        },
+        "fontSize": {
+          "display-hero": [
+            "64px",
+            {
+              "lineHeight": "72px",
+              "letterSpacing": "-0.035em",
+              "fontWeight": "800"
+            }
+          ],
+          "headline-md": [
+            "24px",
+            {
+              "lineHeight": "32px",
+              "letterSpacing": "-0.015em",
+              "fontWeight": "600"
+            }
+          ],
+          "display-hero-mobile": [
+            "38px",
+            {
+              "lineHeight": "46px",
+              "letterSpacing": "-0.025em",
+              "fontWeight": "800"
+            }
+          ],
+          "badge-caps": [
+            "10px",
+            {
+              "lineHeight": "14px",
+              "letterSpacing": "0.05em",
+              "fontWeight": "700"
+            }
+          ],
+          "headline-lg": [
+            "32px",
+            {
+              "lineHeight": "40px",
+              "letterSpacing": "-0.02em",
+              "fontWeight": "700"
+            }
+          ],
+          "caption-caps": [
+            "11px",
+            {
+              "lineHeight": "16px",
+              "letterSpacing": "0.06em",
+              "fontWeight": "600"
+            }
+          ],
+          "headline-sm": [
+            "18px",
+            {
+              "lineHeight": "26px",
+              "letterSpacing": "-0.01em",
+              "fontWeight": "600"
+            }
+          ],
+          "headline-xl": [
+            "48px",
+            {
+              "lineHeight": "56px",
+              "letterSpacing": "-0.025em",
+              "fontWeight": "700"
+            }
+          ],
+          "body-sm": [
+            "13px",
+            {
+              "lineHeight": "18px",
+              "letterSpacing": "0em",
+              "fontWeight": "400"
+            }
+          ],
+          "code-base": [
+            "13px",
+            {
+              "lineHeight": "20px",
+              "letterSpacing": "-0.01em",
+              "fontWeight": "500"
+            }
+          ],
+          "body-lg": [
+            "18px",
+            {
+              "lineHeight": "28px",
+              "letterSpacing": "-0.005em",
+              "fontWeight": "400"
+            }
+          ],
+          "headline-xl-mobile": [
+            "30px",
+            {
+              "lineHeight": "38px",
+              "letterSpacing": "-0.02em",
+              "fontWeight": "700"
+            }
+          ],
+          "code-sm": [
+            "11px",
+            {
+              "lineHeight": "16px",
+              "letterSpacing": "0em",
+              "fontWeight": "500"
+            }
+          ],
+          "body-base": [
+            "14px",
+            {
+              "lineHeight": "22px",
+              "letterSpacing": "0em",
+              "fontWeight": "400"
+            }
+          ]
+        }
+      },
+    },
+  }</script></head><body class="bg-surface font-body-base text-body-base text-on-surface antialiased"><header class="fixed top-0 left-0 right-0 z-50 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.4)]"><div class="h-16 max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-md"><a class="flex items-center gap-space-sm group" data-path="landing-page" href="#"><div class="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center relative shadow-[0_0_16px_rgba(76,215,246,0.25)]"><span class="material-symbols-outlined text-primary text-[20px]">database</span><div class="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-secondary-container flex items-center justify-center"><span class="material-symbols-outlined text-on-secondary-container text-[10px]">search</span></div></div><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight">schema-lens</span><span class="font-code-sm text-code-sm text-outline px-1.5 py-0.5 rounded bg-surface-container-lowest">dbctx</span></div></a><div class="hidden sm:flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-surface-container-low"><span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span><span class="font-badge-caps text-badge-caps text-on-surface-variant uppercase">v0.1.4</span></div></div><nav class="hidden xl:flex items-center gap-1" data-active-classes="bg-surface-container text-on-surface font-medium rounded-lg"><a class="px-3 py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all font-body-base text-body-base" data-path="agent-simulation" href="#">Agent Simulation</a><a class="px-3 py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all font-body-base text-body-base" data-path="why-schema-lens" href="#">Why schema-lens</a><a class="px-3 py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all font-body-base text-body-base" data-path="features" href="#">Features</a><a class="px-3 py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all font-body-base text-body-base" data-path="interactive-playground" href="#">Interactive Playground</a><a class="px-3 py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all font-body-base text-body-base" data-path="setup" href="#">Setup</a><a class="px-3 py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all font-body-base text-body-base" data-path="docs" href="#">Docs</a></nav><div class="flex items-center gap-space-sm"><a class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-all font-code-sm text-code-sm" href="https://github.com" rel="noopener" target="_blank"><span class="material-symbols-outlined text-[16px] text-primary">star</span><span>1.2k</span></a><a class="px-4 py-1.5 rounded-lg bg-primary text-on-primary hover:bg-primary-fixed-dim transition-all shadow-[0_0_20px_rgba(76,215,246,0.35)] font-body-base text-body-base font-semibold" data-path="setup" href="#">Get Started</a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-16 bg-surface min-h-[calc(100vh-16rem)]"><div class="flex flex-col w-full text-on-surface">
+<!-- ========================================================================= -->
+<!-- HERO SECTION                                                              -->
+<!-- ========================================================================= -->
+<section class="relative w-full overflow-hidden pb-space-xl pt-space-lg">
+<!-- Photonic Radial Glow Wells -->
+<div class="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-[720px] h-[480px] bg-primary/10 rounded-full blur-[140px]"></div>
+<div class="pointer-events-none absolute top-48 right-10 w-[360px] h-[360px] bg-secondary-container/20 rounded-full blur-[120px]"></div>
+<div class="max-w-7xl mx-auto px-6 lg:px-12 relative z-10 flex flex-col items-center text-center">
+<!-- Release Status Pill Badge -->
+<div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-high shadow-sm mb-space-md">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+</span>
+<span class="font-caption-caps text-caption-caps uppercase tracking-wider text-primary">v0.1.4 Public Beta</span>
+<span class="text-outline text-[12px]">•</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Local PostgreSQL Schema Cache for Coding Agents</span>
+</div>
+<!-- Main Headline with unexpected scale & gradient balance -->
+<h1 class="font-display-hero text-display-hero max-w-4xl tracking-tight text-on-surface mb-space-md">
+        Stop guessing your schema.<br/>
+<span class="bg-gradient-to-r from-primary via-primary-fixed to-secondary bg-clip-text text-transparent">
+          Let your AI agent look it up.
+        </span>
+</h1>
+<!-- Subtitle -->
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mb-space-lg">
+<code class="font-code-sm text-code-sm text-primary bg-surface-container-high px-1.5 py-0.5 rounded">schema-lens</code> caches your PostgreSQL schema locally and serves surgical relationship paths to Claude, Cursor, and Windsurf in milliseconds — no remote SQL roundtrips, no hallucinated column names.
+      </p>
+<!-- Action Button Group -->
+<div class="flex flex-wrap items-center justify-center gap-space-md mb-space-lg w-full max-w-xl">
+<a class="flex items-center gap-2 px-6 py-3 rounded-lg bg-gradient-to-r from-primary-container to-secondary-container text-on-surface font-body-base text-body-base font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/35 hover:scale-[1.02] active:scale-[0.98] transition-all" href="#setup">
+<span>Get Started Free</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+<!-- Copyable CLI Command with Quick Feedback -->
+<button class="flex items-center gap-2.5 px-4 py-3 rounded-lg bg-surface-container-high hover:bg-surface-container-highest transition-all group font-code-base text-code-base text-on-surface" id="hero-copy-btn" onclick="copySnippet('hero-copy-btn', 'npx dbctx init')">
+<span class="text-primary font-bold">$</span>
+<span class="text-on-surface">npx dbctx init</span>
+<span class="material-symbols-outlined text-[18px] text-outline group-hover:text-primary transition-colors" id="hero-copy-icon">content_copy</span>
+</button>
+<a class="flex items-center gap-2 px-4 py-3 rounded-lg bg-surface-container hover:bg-surface-container-high transition-colors font-body-base text-body-base text-on-surface-variant hover:text-on-surface" href="https://github.com" rel="noopener" target="_blank">
+<span class="material-symbols-outlined text-[18px] text-primary">code</span>
+<span>GitHub</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-lowest font-code-sm text-code-sm text-outline">1.2k ★</span>
+</a>
+</div>
+<!-- Telemetry Highlights (Stats Strip) -->
+<div class="flex flex-wrap items-center justify-center gap-space-md mb-space-xl">
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container-low shadow-sm">
+<span class="material-symbols-outlined text-tertiary text-[16px]">bolt</span>
+<span class="font-code-sm text-code-sm text-on-surface"><strong>2.1ms</strong> Local Cache Read</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container-low shadow-sm">
+<span class="material-symbols-outlined text-primary text-[16px]">trending_down</span>
+<span class="font-code-sm text-code-sm text-on-surface"><strong>95.7%</strong> Token Reduction</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container-low shadow-sm">
+<span class="material-symbols-outlined text-secondary text-[16px]">lock</span>
+<span class="font-code-sm text-code-sm text-on-surface"><strong>Air-Gapped</strong> DB Security</span>
+</div>
+</div>
+<!-- Hero Terminal Visual: Dual-Pane Agent Flow Preview -->
+<div class="w-full max-w-5xl rounded-xl bg-surface-container-low shadow-2xl p-1 text-left relative">
+<div class="rounded-lg bg-surface-container-lowest overflow-hidden">
+<!-- Terminal Chrome Bar -->
+<div class="h-10 px-4 bg-surface-container-high flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-error/70"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-secondary-container/70"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary/70"></span>
+<span class="font-code-sm text-code-sm text-outline ml-2">claude-desktop ~ stdio:mcp/dbctx</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="px-2 py-0.5 rounded bg-surface-container text-tertiary font-code-sm text-code-sm flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse"></span> MCP Ready
+              </span>
+<span class="font-code-sm text-code-sm text-outline">schema_fingerprint: a9f81d</span>
+</div>
+</div>
+<!-- Dual-Pane Split Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 divide-y md:divide-y-0 p-4 gap-4 bg-surface-container-lowest">
+<!-- Left Pane: AI Agent Context Window Query -->
+<div class="md:col-span-5 p-4 rounded-lg bg-surface-container flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-center gap-2">
+<div class="w-5 h-5 rounded-full bg-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-[13px] text-on-secondary">smart_toy</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-on-surface">Cursor / Agent Session</span>
+</div>
+<span class="font-badge-caps text-badge-caps text-outline uppercase">Input Prompt</span>
+</div>
+<div class="p-3 rounded bg-surface-container-high font-body-sm text-body-sm text-on-surface mb-3">
+<p class="text-on-surface-variant font-code-sm text-code-sm mb-1">// User Prompt in Chat</p>
+<p>"Write an idempotent migration to aggregate total refunds per customer. What foreign keys bind <span class="text-primary font-code-sm text-code-sm font-semibold">customers</span> to <span class="text-primary font-code-sm text-code-sm font-semibold">refunds</span>?"</p>
+</div>
+<div class="space-y-1.5 text-on-surface-variant font-code-sm text-code-sm">
+<div class="flex items-center gap-2 text-tertiary">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span>Intercepting via Model Context Protocol</span>
+</div>
+<div class="flex items-center gap-2 text-outline">
+<span class="material-symbols-outlined text-[16px]">sync</span>
+<span>Routing to local stdio tool: <strong class="text-on-surface">dbctx.join_path</strong></span>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-3 bg-surface-container-lowest p-2.5 rounded flex items-center justify-between text-outline font-code-sm text-code-sm">
+<span>Direct DB credentials shared:</span>
+<span class="text-tertiary font-bold">0 (Air-Gapped)</span>
+</div>
+</div>
+<!-- Right Pane: Instant Schema Lens Synthesis -->
+<div class="md:col-span-7 p-4 rounded-lg bg-surface-container-high flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">schema</span>
+<span class="font-code-sm text-code-sm text-on-surface font-semibold">dbctx join_path customers refunds</span>
+</div>
+<span class="px-2 py-0.5 rounded bg-surface-container-lowest font-code-sm text-code-sm text-tertiary font-bold">
+                    ⚡ 2.1ms
+                  </span>
+</div>
+<!-- Synthesized JSON Payload -->
+<pre class="font-code-base text-code-base text-on-surface-variant overflow-x-auto p-3 rounded bg-surface-container-lowest leading-relaxed"><code>{
+  <span class="text-primary">"status"</span>: <span class="text-tertiary">"resolved"</span>,
+  <span class="text-primary">"hop_count"</span>: 2,
+  <span class="text-primary">"path"</span>: [
+    {
+      <span class="text-primary">"from"</span>: <span class="text-secondary">"customers.id"</span>,
+      <span class="text-primary">"to"</span>: <span class="text-secondary">"orders.customer_id"</span>,
+      <span class="text-primary">"fk_constraint"</span>: <span class="text-on-surface">"fk_orders_customer"</span>
+    },
+    {
+      <span class="text-primary">"from"</span>: <span class="text-secondary">"orders.id"</span>,
+      <span class="text-primary">"to"</span>: <span class="text-secondary">"refunds.order_id"</span>,
+      <span class="text-primary">"fk_constraint"</span>: <span class="text-on-surface">"fk_refunds_order"</span>
+    }
+  ],
+  <span class="text-primary">"tokens_injected"</span>: <span class="text-tertiary">148</span>,
+  <span class="text-primary">"raw_introspection_avoided"</span>: <span class="text-error">"3,850 tokens"</span>
+}</code></pre>
+</div>
+<div class="mt-3 flex items-center justify-between text-on-surface-variant font-code-sm text-code-sm pt-2">
+<span class="flex items-center gap-1.5 text-tertiary">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span> Exact traversal confirmed
+                </span>
+<span class="text-outline">No DB query fired</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- INTERACTIVE AI AGENT FLOW SIMULATION: WITH vs WITHOUT SCHEMA-LENS         -->
+<!-- ========================================================================= -->
+<section class="w-full py-space-xl bg-surface-container-lowest relative">
+<div class="max-w-7xl mx-auto px-6 lg:px-12">
+<!-- Section Header -->
+<div class="text-center max-w-3xl mx-auto mb-space-lg">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-surface-container font-badge-caps text-badge-caps uppercase tracking-wider text-primary mb-space-sm">
+<span class="material-symbols-outlined text-[14px]">tune</span> Live Agent Benchmark
+        </div>
+<h2 class="font-headline-xl text-headline-xl text-on-surface mb-space-xs">
+          Watch How Coding Agents Work: With vs Without schema-lens
+        </h2>
+<p class="font-body-base text-body-base text-on-surface-variant">
+          See the mechanical contrast between raw DB schema introspection and high-density deterministic MCP context.
+        </p>
+</div>
+<!-- Step Controls -->
+<div class="flex flex-wrap items-center justify-center gap-2 mb-space-lg">
+<button class="sim-tab px-4 py-2 rounded-lg bg-surface-container-high text-primary font-code-sm text-code-sm font-semibold transition-all shadow-sm" id="step-btn-0" onclick="setSimStep(0)">
+          1. Agent Receives Prompt
+        </button>
+<button class="sim-tab px-4 py-2 rounded-lg bg-surface-container text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm transition-all" id="step-btn-1" onclick="setSimStep(1)">
+          2. Schema Inspection
+        </button>
+<button class="sim-tab px-4 py-2 rounded-lg bg-surface-container text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm transition-all" id="step-btn-2" onclick="setSimStep(2)">
+          3. Token &amp; Latency Cost
+        </button>
+<button class="sim-tab px-4 py-2 rounded-lg bg-surface-container text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm transition-all" id="step-btn-3" onclick="setSimStep(3)">
+          4. Generated SQL Output
+        </button>
+<button class="ml-2 px-4 py-2 rounded-lg bg-primary text-on-primary font-body-base text-body-base font-semibold flex items-center gap-1.5 hover:bg-primary-fixed-dim transition-all shadow-md shadow-primary/20" id="run-sim-btn" onclick="runAutoSim()">
+<span class="material-symbols-outlined text-[16px]" id="run-sim-icon">play_arrow</span>
+<span id="run-sim-text">Run Auto Simulation</span>
+</button>
+</div>
+<!-- Side-by-Side Comparison Arena -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-space-lg">
+<!-- Left: Standard Agent (Without schema-lens) -->
+<div class="rounded-xl bg-surface-container p-space-md shadow-lg flex flex-col justify-between relative overflow-hidden">
+<div class="absolute top-0 left-0 right-0 h-1 bg-error-container"></div>
+<div>
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-error text-[20px]">warning</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Standard Agent (Without schema-lens)</span>
+</div>
+<span class="px-2 py-0.5 rounded bg-error/10 text-error font-code-sm text-code-sm font-semibold">Slow &amp; Risky</span>
+</div>
+<!-- Dynamic Step Content -->
+<div class="p-4 rounded-lg bg-surface-container-lowest font-code-base text-code-base min-h-[260px] flex flex-col justify-center" id="left-sim-display">
+<!-- Loaded via JavaScript -->
+</div>
+</div>
+<!-- Metrics Footer Left -->
+<div class="mt-6 pt-4 bg-surface-container-low p-4 rounded-lg space-y-2">
+<div class="flex justify-between items-center font-code-sm text-code-sm">
+<span class="text-on-surface-variant">Introspection Latency:</span>
+<span class="text-error font-bold" id="left-sim-lat">980ms (Network roundtrips)</span>
+</div>
+<div class="flex justify-between items-center font-code-sm text-code-sm">
+<span class="text-on-surface-variant">Tokens Consumed:</span>
+<span class="text-error font-bold" id="left-sim-tok">4,420 tokens</span>
+</div>
+<div class="flex justify-between items-center font-code-sm text-code-sm">
+<span class="text-on-surface-variant">Schema Fidelity:</span>
+<span class="text-error font-bold">Hallucinated columns on drift</span>
+</div>
+</div>
+</div>
+<!-- Right: schema-lens Agent (With dbctx) -->
+<div class="rounded-xl bg-surface-container-high p-space-md shadow-xl flex flex-col justify-between relative overflow-hidden">
+<div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-tertiary"></div>
+<div>
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary text-[20px]">verified</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">schema-lens MCP Agent (With dbctx)</span>
+</div>
+<span class="px-2 py-0.5 rounded bg-tertiary/15 text-tertiary font-code-sm text-code-sm font-semibold">Sub-3ms Deterministic</span>
+</div>
+<!-- Dynamic Step Content -->
+<div class="p-4 rounded-lg bg-surface-container-lowest font-code-base text-code-base min-h-[260px] flex flex-col justify-center" id="right-sim-display">
+<!-- Loaded via JavaScript -->
+</div>
+</div>
+<!-- Metrics Footer Right -->
+<div class="mt-6 pt-4 bg-surface-container p-4 rounded-lg space-y-2">
+<div class="flex justify-between items-center font-code-sm text-code-sm">
+<span class="text-on-surface-variant">Introspection Latency:</span>
+<span class="text-tertiary font-bold" id="right-sim-lat">1.9ms (Local disk cache)</span>
+</div>
+<div class="flex justify-between items-center font-code-sm text-code-sm">
+<span class="text-on-surface-variant">Tokens Consumed:</span>
+<span class="text-tertiary font-bold" id="right-sim-tok">172 tokens (96% savings)</span>
+</div>
+<div class="flex justify-between items-center font-code-sm text-code-sm">
+<span class="text-on-surface-variant">Schema Fidelity:</span>
+<span class="text-tertiary font-bold">100% verified FKs &amp; Types</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- "WHY SCHEMA-LENS?" 4-PILLAR FEATURE MATRIX                                -->
+<!-- ========================================================================= -->
+<section class="w-full py-space-xl bg-surface relative">
+<div class="max-w-7xl mx-auto px-6 lg:px-12">
+<div class="text-center max-w-2xl mx-auto mb-space-xl">
+<span class="font-caption-caps text-caption-caps uppercase tracking-wider text-primary">Core Architectural Advantages</span>
+<h2 class="font-headline-xl text-headline-xl text-on-surface mt-space-xs mb-space-xs">
+          Built for Low Latency, Zero Leakage, and Zero Token Bloat
+        </h2>
+<p class="font-body-base text-body-base text-on-surface-variant">
+          LLMs should focus on generating high-order business logic, not parsing gigantic SQL catalog dumps.
+        </p>
+</div>
+<!-- 4 Pillars Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<!-- Pillar 1: 95% Token Savings -->
+<div class="rounded-xl bg-surface-container p-space-md shadow-md flex flex-col justify-between group hover:bg-surface-container-high transition-all">
+<div>
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[24px]">pie_chart</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">95.7% Token Savings</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-4">
+              Eliminate multi-thousand token <code class="text-primary font-code-sm text-code-sm">information_schema</code> dumps. Feed compact, minified relational definitions straight into agent context.
+            </p>
+</div>
+<!-- Comparative Bar Visualization -->
+<div class="space-y-2 pt-2 bg-surface-container-lowest p-3 rounded-lg">
+<div>
+<div class="flex justify-between text-[11px] font-code-sm text-outline mb-1">
+<span>Raw DB Dump</span>
+<span class="text-error font-bold">4,200 tok</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container-high overflow-hidden">
+<div class="h-full bg-error rounded-full w-[98%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-[11px] font-code-sm text-outline mb-1">
+<span>schema-lens</span>
+<span class="text-tertiary font-bold">180 tok</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container-high overflow-hidden">
+<div class="h-full bg-tertiary rounded-full w-[4.3%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Pillar 2: Sub-3ms Instant Reads -->
+<div class="rounded-xl bg-surface-container p-space-md shadow-md flex flex-col justify-between group hover:bg-surface-container-high transition-all">
+<div>
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[24px]">speed</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Sub-3ms Local Reads</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-4">
+              Local cached snapshot read from memory-mapped disk storage. Coding on airplanes, trains, or offline staging envs works without interruption.
+            </p>
+</div>
+<!-- Offline Telemetry Badge -->
+<div class="p-3 rounded-lg bg-surface-container-lowest flex items-center justify-between font-code-sm text-code-sm">
+<span class="flex items-center gap-1.5 text-on-surface">
+<span class="material-symbols-outlined text-[16px] text-tertiary">flight</span>
+              Offline Ready
+            </span>
+<span class="text-primary font-bold">1.4ms AVG</span>
+</div>
+</div>
+<!-- Pillar 3: Zero Production DB Risk -->
+<div class="rounded-xl bg-surface-container p-space-md shadow-md flex flex-col justify-between group hover:bg-surface-container-high transition-all">
+<div>
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[24px]">shield</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Zero Database Risk</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-4">
+              Agents never touch live database connection strings, credentials, or pool connections. Snapshots are static, redacted, and air-gapped.
+            </p>
+</div>
+<div class="p-3 rounded-lg bg-surface-container-lowest flex items-center justify-between font-code-sm text-code-sm">
+<span class="flex items-center gap-1.5 text-outline">
+<span class="material-symbols-outlined text-[16px] text-secondary">key_off</span>
+              Live DB Access
+            </span>
+<span class="text-tertiary font-bold">PROHIBITED</span>
+</div>
+</div>
+<!-- Pillar 4: Auto-Fresh Drift Engine -->
+<div class="rounded-xl bg-surface-container p-space-md shadow-md flex flex-col justify-between group hover:bg-surface-container-high transition-all">
+<div>
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[24px]">published_with_changes</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Auto-Fresh Drift Engine</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-4">
+              Watches Prisma, Drizzle, or raw SQL migrations. Instant SHA-256 fingerprint drift checks guarantee your agent never writes code against stale schemas.
+            </p>
+</div>
+<div class="p-3 rounded-lg bg-surface-container-lowest flex items-center justify-between font-code-sm text-code-sm">
+<span class="flex items-center gap-1.5 text-outline">
+<span class="material-symbols-outlined text-[16px] text-primary">fingerprint</span>
+              Migration Hash
+            </span>
+<span class="text-primary font-bold">SYNCED</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- BENTO GRID: ADVANCED SCHEMA INTELLIGENCE                                  -->
+<!-- ========================================================================= -->
+<section class="w-full py-space-xl bg-surface-container-lowest relative">
+<div class="max-w-7xl mx-auto px-6 lg:px-12">
+<div class="text-center max-w-3xl mx-auto mb-space-lg">
+<span class="font-caption-caps text-caption-caps uppercase tracking-wider text-primary">Capabilities Bento</span>
+<h2 class="font-headline-xl text-headline-xl text-on-surface mt-space-xs mb-space-xs">
+          Engineered for Complex Relational Graphs
+        </h2>
+<p class="font-body-base text-body-base text-on-surface-variant">
+          PostgreSQL is more than simple table lists. schema-lens synthesizes foreign keys, JSONB structures, and enum definitions for instant agent digestion.
+        </p>
+</div>
+<!-- Bento Grid Setup -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+<!-- Card 1: 2-Column Relationship Traversal Graph -->
+<div class="md:col-span-2 rounded-xl bg-surface-container p-space-md shadow-md flex flex-col justify-between overflow-hidden relative">
+<div>
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">hub</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Graph-Powered Relationship Traversal</span>
+</div>
+<span class="px-2 py-0.5 rounded bg-surface-container-highest font-code-sm text-code-sm text-primary">BFS Shortest-Path</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant max-w-xl mb-4">
+              Ask your agent how two disparate tables link together. <code class="text-primary font-code-sm text-code-sm">dbctx</code> computes the optimal join sequence across foreign key chains instantly.
+            </p>
+</div>
+<!-- Interactive Node Graph Preview Visual -->
+<div class="rounded-lg bg-surface-container-lowest p-4 relative overflow-x-auto">
+<div class="flex items-center justify-between min-w-[540px] gap-2 py-3">
+<!-- Node: users -->
+<div class="p-3 rounded-lg bg-surface-container-high shadow-md w-36">
+<div class="flex items-center justify-between mb-2">
+<span class="font-code-sm text-code-sm font-bold text-on-surface">users</span>
+<span class="text-[10px] text-tertiary">PK</span>
+</div>
+<div class="space-y-1 text-[11px] font-code-sm text-outline">
+<div class="text-primary">id: uuid</div>
+<div>email: text</div>
+<div>org_id: uuid</div>
+</div>
+</div>
+<!-- Vector Arrow 1 -->
+<div class="flex flex-col items-center justify-center text-outline">
+<span class="text-[10px] font-code-sm text-primary mb-1">user_id</span>
+<div class="h-0.5 w-12 bg-primary"></div>
+<span class="material-symbols-outlined text-[14px] text-primary -mt-1.5">arrow_forward</span>
+</div>
+<!-- Node: orders -->
+<div class="p-3 rounded-lg bg-surface-container-high shadow-md w-36">
+<div class="flex items-center justify-between mb-2">
+<span class="font-code-sm text-code-sm font-bold text-on-surface">orders</span>
+<span class="text-[10px] text-tertiary">PK/FK</span>
+</div>
+<div class="space-y-1 text-[11px] font-code-sm text-outline">
+<div class="text-primary">id: uuid</div>
+<div class="text-secondary">user_id: uuid</div>
+<div>total: numeric</div>
+</div>
+</div>
+<!-- Vector Arrow 2 -->
+<div class="flex flex-col items-center justify-center text-outline">
+<span class="text-[10px] font-code-sm text-primary mb-1">order_id</span>
+<div class="h-0.5 w-12 bg-primary"></div>
+<span class="material-symbols-outlined text-[14px] text-primary -mt-1.5">arrow_forward</span>
+</div>
+<!-- Node: order_items -->
+<div class="p-3 rounded-lg bg-surface-container-high shadow-md w-36">
+<div class="flex items-center justify-between mb-2">
+<span class="font-code-sm text-code-sm font-bold text-on-surface">order_items</span>
+<span class="text-[10px] text-tertiary">FK</span>
+</div>
+<div class="space-y-1 text-[11px] font-code-sm text-outline">
+<div class="text-primary">id: uuid</div>
+<div class="text-secondary">order_id: uuid</div>
+<div class="text-secondary">product_id: uuid</div>
+</div>
+</div>
+</div>
+<!-- Traversal Output Micro-bar -->
+<div class="mt-3 pt-2 bg-surface-container p-2 rounded text-outline font-code-sm text-code-sm flex items-center justify-between">
+<span class="text-on-surface">Path: users → orders → order_items</span>
+<span class="text-tertiary font-bold">Resolved in 1.1ms</span>
+</div>
+</div>
+</div>
+<!-- Card 2: Deep Postgres Type Awareness -->
+<div class="rounded-xl bg-surface-container p-space-md shadow-md flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-secondary text-[20px]">data_object</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Deep Type Awareness</h3>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-4">
+              Understands enums, JSONB structures, domain types, and Postgres-specific extensions without ambiguity.
+            </p>
+</div>
+<!-- Type Badges -->
+<div class="grid grid-cols-2 gap-2 bg-surface-container-lowest p-3 rounded-lg font-code-sm text-code-sm">
+<div class="p-2 rounded bg-surface-container text-on-surface">
+<span class="text-[10px] text-outline block uppercase">Enums</span>
+<span class="text-primary">role_type</span>
+</div>
+<div class="p-2 rounded bg-surface-container text-on-surface">
+<span class="text-[10px] text-outline block uppercase">Composite</span>
+<span class="text-secondary">address_t</span>
+</div>
+<div class="p-2 rounded bg-surface-container text-on-surface">
+<span class="text-[10px] text-outline block uppercase">JSONB Keys</span>
+<span class="text-tertiary">metadata.*</span>
+</div>
+<div class="p-2 rounded bg-surface-container text-on-surface">
+<span class="text-[10px] text-outline block uppercase">Index Engine</span>
+<span class="text-primary">GIN, B-Tree</span>
+</div>
+</div>
+</div>
+<!-- Card 3: Polymorphic & Index Advisor -->
+<div class="rounded-xl bg-surface-container p-space-md shadow-md flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-tertiary text-[20px]">query_stats</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Index Advisor</h3>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-4">
+              Informs coding agents whether proposed <code class="text-primary font-code-sm text-code-sm">WHERE</code> filters hit an existing index or risk triggering expensive sequential table scans.
+            </p>
+</div>
+<div class="p-3 rounded-lg bg-surface-container-lowest font-code-sm text-code-sm text-on-surface-variant space-y-1">
+<div class="flex items-center justify-between text-tertiary">
+<span>idx_orders_created_at</span>
+<span class="text-[11px] uppercase">Indexed</span>
+</div>
+<div class="flex items-center justify-between text-outline">
+<span>notes_search_vector</span>
+<span class="text-[11px] text-secondary">GIN Index</span>
+</div>
+</div>
+</div>
+<!-- Card 4: Multi-Database Profile Switching -->
+<div class="md:col-span-2 rounded-xl bg-surface-container p-space-md shadow-md flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">database</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Multi-Database Profile Switching</span>
+</div>
+<span class="px-2 py-0.5 rounded bg-surface-container-highest font-code-sm text-code-sm text-outline">Zero Config</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant max-w-xl mb-4">
+              Toggle between <code class="text-primary font-code-sm text-code-sm">local_dev</code>, <code class="text-primary font-code-sm text-code-sm">staging</code>, or branch environments with a single flag. Agents instantly adapt their relational schema queries without restarting MCP sessions.
+            </p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-surface-container-lowest p-3 rounded-lg font-code-sm text-code-sm">
+<div class="p-2.5 rounded bg-surface-container-high text-on-surface flex items-center justify-between">
+<span>profile: default</span>
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+</div>
+<div class="p-2.5 rounded bg-surface-container text-outline flex items-center justify-between">
+<span>profile: staging</span>
+<span class="w-2 h-2 rounded-full bg-outline"></span>
+</div>
+<div class="p-2.5 rounded bg-surface-container text-outline flex items-center justify-between">
+<span>profile: branch_v2</span>
+<span class="w-2 h-2 rounded-full bg-outline"></span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- INTERACTIVE TERMINAL / MCP QUERY PLAYGROUND                               -->
+<!-- ========================================================================= -->
+<section class="w-full py-space-xl bg-surface relative" id="playground">
+<div class="max-w-6xl mx-auto px-6 lg:px-12">
+<div class="text-center max-w-2xl mx-auto mb-space-lg">
+<span class="font-caption-caps text-caption-caps uppercase tracking-wider text-primary">Live Explorer</span>
+<h2 class="font-headline-xl text-headline-xl text-on-surface mt-space-xs mb-space-xs">
+          Interactive Query Playground
+        </h2>
+<p class="font-body-base text-body-base text-on-surface-variant">
+          Click through live commands to preview how schema-lens responds in terminal and MCP protocol streams.
+        </p>
+</div>
+<!-- Playground Controls & Tabs -->
+<div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+<!-- Scenario Presets -->
+<div class="flex flex-wrap gap-2">
+<button class="scen-btn px-3 py-1.5 rounded-lg bg-surface-container-highest text-primary font-code-sm text-code-sm font-semibold transition-all" id="scen-join_path" onclick="setScenario('join_path')">
+            Join Path (FK BFS)
+          </button>
+<button class="scen-btn px-3 py-1.5 rounded-lg bg-surface-container text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm transition-all" id="scen-list_tables" onclick="setScenario('list_tables')">
+            List Tables
+          </button>
+<button class="scen-btn px-3 py-1.5 rounded-lg bg-surface-container text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm transition-all" id="scen-describe_table" onclick="setScenario('describe_table')">
+            Describe Schema
+          </button>
+<button class="scen-btn px-3 py-1.5 rounded-lg bg-surface-container text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm transition-all" id="scen-fuzzy_search" onclick="setScenario('fuzzy_search')">
+            Fuzzy Column Search
+          </button>
+</div>
+<!-- Format Toggle -->
+<div class="flex items-center gap-1 bg-surface-container-low p-1 rounded-lg">
+<button class="fmt-btn px-3 py-1 rounded bg-surface-container-high text-on-surface font-code-sm text-code-sm font-semibold" id="fmt-cli" onclick="setFormat('cli')">
+            CLI View
+          </button>
+<button class="fmt-btn px-3 py-1 rounded text-outline hover:text-on-surface font-code-sm text-code-sm" id="fmt-mcp" onclick="setFormat('mcp')">
+            MCP JSON
+          </button>
+<button class="fmt-btn px-3 py-1 rounded text-outline hover:text-on-surface font-code-sm text-code-sm" id="fmt-llm" onclick="setFormat('llm')">
+            Agent Markdown
+          </button>
+</div>
+</div>
+<!-- Interactive Playground Terminal Output Screen -->
+<div class="rounded-xl bg-surface-container-lowest shadow-2xl overflow-hidden">
+<div class="h-10 px-4 bg-surface-container-high flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-error/70"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-secondary-container/70"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary/70"></span>
+<span class="font-code-sm text-code-sm text-outline ml-2" id="playground-title">dbctx v0.1.4 — playground</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-code-sm text-code-sm text-tertiary font-bold" id="play-exec-time">⚡ 1.8ms</span>
+<button class="text-outline hover:text-on-surface transition-colors flex items-center gap-1 font-code-sm text-code-sm" id="play-copy" onclick="copySnippet('play-copy', document.getElementById('playground-code').innerText)">
+<span class="material-symbols-outlined text-[16px]">content_copy</span>
+<span>Copy</span>
+</button>
+</div>
+</div>
+<!-- Terminal Body -->
+<div class="p-6 overflow-x-auto min-h-[300px]">
+<pre class="font-code-base text-code-base text-on-surface leading-relaxed" id="playground-code"><code><!-- Loaded via JS --></code></pre>
+</div>
+</div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- 60-SECOND SETUP & MCP INTEGRATIONS                                        -->
+<!-- ========================================================================= -->
+<section class="w-full py-space-xl bg-surface-container-lowest relative" id="setup">
+<div class="max-w-5xl mx-auto px-6 lg:px-12">
+<div class="text-center max-w-2xl mx-auto mb-space-lg">
+<span class="font-caption-caps text-caption-caps uppercase tracking-wider text-primary">Integration Guide</span>
+<h2 class="font-headline-xl text-headline-xl text-on-surface mt-space-xs mb-space-xs">
+          The 60-Second Setup
+        </h2>
+<p class="font-body-base text-body-base text-on-surface-variant">
+          Add schema-lens to your coding agent configuration and give it immediate relational awareness.
+        </p>
+</div>
+<!-- Agent Target Selector Tabs -->
+<div class="flex flex-wrap items-center justify-center gap-2 mb-space-md">
+<button class="agent-tab px-4 py-2 rounded-lg bg-surface-container-high text-primary font-code-sm text-code-sm font-semibold transition-all" id="agent-btn-claude" onclick="setAgentTarget('claude')">
+          Claude Desktop
+        </button>
+<button class="agent-tab px-4 py-2 rounded-lg bg-surface-container text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm transition-all" id="agent-btn-cursor" onclick="setAgentTarget('cursor')">
+          Cursor (.cursor/mcp.json)
+        </button>
+<button class="agent-tab px-4 py-2 rounded-lg bg-surface-container text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm transition-all" id="agent-btn-antigravity" onclick="setAgentTarget('antigravity')">
+          Antigravity / Gemini
+        </button>
+<button class="agent-tab px-4 py-2 rounded-lg bg-surface-container text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm transition-all" id="agent-btn-windsurf" onclick="setAgentTarget('windsurf')">
+          Windsurf / Copilot
+        </button>
+</div>
+<!-- Code Window with Config Path -->
+<div class="rounded-xl bg-surface-container shadow-xl overflow-hidden mb-space-lg">
+<div class="h-10 px-4 bg-surface-container-high flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-primary">folder_open</span>
+<span class="font-code-sm text-code-sm text-on-surface" id="config-file-path">~/Library/Application Support/Claude/claude_desktop_config.json</span>
+</div>
+<button class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container-lowest text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm transition-colors" id="config-copy-btn" onclick="copySnippet('config-copy-btn', document.getElementById('config-json-code').innerText)">
+<span class="material-symbols-outlined text-[14px]">content_copy</span>
+<span>Copy Config</span>
+</button>
+</div>
+<div class="p-6 bg-surface-container-lowest overflow-x-auto">
+<pre class="font-code-base text-code-base text-on-surface leading-relaxed" id="config-json-code"><code>{
+  "mcpServers": {
+    "dbctx": {
+      "command": "npx",
+      "args": ["dbctx", "mcp-serve"]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<!-- 3-Step Execution Checklist -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+<div class="p-4 rounded-lg bg-surface-container flex items-start gap-3">
+<div class="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold text-[12px] flex-shrink-0 mt-0.5">1</div>
+<div>
+<span class="font-code-sm text-code-sm font-bold text-on-surface block mb-1">Generate Snapshot</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Run <code class="text-primary font-code-sm text-code-sm">npx dbctx init</code> with your connection URL once.</span>
+</div>
+</div>
+<div class="p-4 rounded-lg bg-surface-container flex items-start gap-3">
+<div class="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold text-[12px] flex-shrink-0 mt-0.5">2</div>
+<div>
+<span class="font-code-sm text-code-sm font-bold text-on-surface block mb-1">Add MCP Config</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Paste the 5 lines of JSON above into your agent configuration.</span>
+</div>
+</div>
+<div class="p-4 rounded-lg bg-surface-container flex items-start gap-3">
+<div class="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold text-[12px] flex-shrink-0 mt-0.5">3</div>
+<div>
+<span class="font-code-sm text-code-sm font-bold text-on-surface block mb-1">Zero Hallucinations</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Ask questions: "How does invoice link to billing address?"</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- BOTTOM CTA & SOCIAL PROOF                                                 -->
+<!-- ========================================================================= -->
+<section class="w-full py-space-xl bg-surface relative overflow-hidden">
+<!-- Ambient Cyan Glow -->
+<div class="pointer-events-none absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[360px] bg-primary/10 rounded-full blur-[160px]"></div>
+<div class="max-w-4xl mx-auto px-6 lg:px-12 text-center relative z-10">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-high mb-space-md">
+<span class="material-symbols-outlined text-tertiary text-[16px]">verified</span>
+<span class="font-badge-caps text-badge-caps uppercase tracking-wider text-on-surface-variant">100% Free &amp; Open Source (MIT)</span>
+</div>
+<h2 class="font-headline-xl text-headline-xl text-on-surface mb-space-sm tracking-tight">
+        Give your AI coding agent instant PostgreSQL awareness.
+      </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl mx-auto mb-space-lg">
+        Stop burning tokens on endless catalog queries. Cache locally, query deterministically, and code at the speed of thought.
+      </p>
+<!-- Bottom CTAs -->
+<div class="flex flex-wrap items-center justify-center gap-space-md mb-space-lg">
+<button class="flex items-center gap-2 px-6 py-3.5 rounded-lg bg-primary text-on-primary font-body-base text-body-base font-semibold shadow-lg shadow-primary/25 hover:bg-primary-fixed-dim transition-all" id="bottom-cli-btn" onclick="copySnippet('bottom-cli-btn', 'npm i -g @schemalens/dbctx')">
+<span class="material-symbols-outlined text-[18px]">terminal</span>
+<span>npm i -g @schemalens/dbctx</span>
+</button>
+<a class="flex items-center gap-2 px-6 py-3.5 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-body-base text-body-base transition-colors" href="https://github.com" rel="noopener" target="_blank">
+<span class="material-symbols-outlined text-[18px] text-primary">star</span>
+<span>Star on GitHub (1.2k)</span>
+</a>
+</div>
+<!-- Trust Badges Strip -->
+<div class="flex flex-wrap items-center justify-center gap-space-lg text-outline font-code-sm text-code-sm">
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px] text-tertiary">check</span> MCP 1.0 Spec</span>
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px] text-tertiary">check</span> PostgreSQL 12 - 17</span>
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px] text-tertiary">check</span> Supabase &amp; Neon Tested</span>
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px] text-tertiary">check</span> Zero Telemetry Leakage</span>
+</div>
+</div>
+</section>
+</div>
+<!-- Interactive Client-side Script -->
+<script>
+  // Helper for copying snippets with visual feedback
+  function copySnippet(btnId, text) {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById(btnId);
+        if (!btn) return;
+        const originalHtml = btn.innerHTML;
+        btn.innerHTML = '<span class="material-symbols-outlined text-[16px] text-tertiary">check</span><span class="text-tertiary font-bold">Copied!</span>';
+        setTimeout(() => {
+          btn.innerHTML = originalHtml;
+        }, 2000);
+      });
+    }
+  }
+
+  // --- 1. SIMULATION LOGIC ---
+  const simSteps = [
+    {
+      title: "1. Agent Receives Prompt",
+      left: `<div class="text-outline mb-2">// User asks Claude / Cursor:</div>
+<div class="text-on-surface">"Write a migration adding refund reasons linked to specific customer disputes."</div>
+<div class="mt-4 text-error flex items-center gap-1.5">
+  <span class="material-symbols-outlined text-[16px]">sync_problem</span>
+  <span>Agent has no schema in prompt context. Stalling...</span>
+</div>`,
+      right: `<div class="text-outline mb-2">// User asks Claude / Cursor:</div>
+<div class="text-on-surface">"Write a migration adding refund reasons linked to specific customer disputes."</div>
+<div class="mt-4 text-tertiary flex items-center gap-1.5">
+  <span class="material-symbols-outlined text-[16px]">bolt</span>
+  <span>MCP tool hooks detected: dbctx active via stdio.</span>
+</div>`,
+      leftLat: "0ms", leftTok: "0 tokens",
+      rightLat: "0ms", rightTok: "0 tokens"
+    },
+    {
+      title: "2. Schema Inspection",
+      left: `<div class="text-error font-bold mb-2">Executing 4 remote queries:</div>
+<div class="text-outline font-code-sm">SELECT table_name FROM information_schema.tables;</div>
+<div class="text-outline font-code-sm">SELECT column_name, data_type FROM information_schema.columns WHERE table_name = 'customers';</div>
+<div class="text-outline font-code-sm">SELECT * FROM pg_constraint WHERE contype = 'f';</div>
+<div class="mt-3 text-error">Warning: Remote query pool lock on production RDS</div>`,
+      right: `<div class="text-tertiary font-bold mb-2">Local stdio tool call:</div>
+<div class="text-primary font-code-sm">dbctx.describe_tables(["customers", "refunds", "disputes"])</div>
+<div class="mt-2 text-on-surface-variant font-code-sm">-> Disk hit: .dbctx/cache.json (hash: a9f81d)</div>
+<div class="mt-2 text-tertiary font-bold">Done in 1.9ms. Zero network traffic.</div>`,
+      leftLat: "980ms (Remote DB)", leftTok: "4,420 tokens",
+      rightLat: "1.9ms (Local Disk)", rightTok: "172 tokens"
+    },
+    {
+      title: "3. Token & Latency Cost",
+      left: `<div class="p-3 bg-error/10 rounded text-error space-y-1">
+  <div class="font-bold">Context Window Saturation:</div>
+  <div>- 4,420 tokens injected into agent history</div>
+  <div>- High probability of attention degradation</div>
+  <div>- Remote DB roundtrips delay agent by ~1 second</div>
+</div>`,
+      right: `<div class="p-3 bg-tertiary/10 rounded text-tertiary space-y-1">
+  <div class="font-bold">Surgical Token Economy:</div>
+  <div>- Only 172 tokens of minified schema injected</div>
+  <div>- 96.1% tokens saved for business logic reasoning</div>
+  <div>- Agent answers instantly without pausing</div>
+</div>`,
+      leftLat: "1,120ms total", leftTok: "4,420 tokens",
+      rightLat: "2.1ms total", rightTok: "172 tokens"
+    },
+    {
+      title: "4. Generated SQL Output",
+      left: `<pre class="text-on-surface-variant text-[12px]"><code>-- Generated with hallucinations:
+ALTER TABLE refunds
+ADD COLUMN dispute_id INTEGER;
+-- ERROR: disputes.id is UUID, not INTEGER!
+-- Stale constraint name used.</code></pre>`,
+      right: `<pre class="text-on-surface text-[12px]"><code>-- 100% Deterministic & Type-Safe:
+ALTER TABLE refunds
+ADD COLUMN dispute_id UUID
+REFERENCES disputes(id) ON DELETE CASCADE;
+CREATE INDEX idx_refunds_dispute ON refunds(dispute_id);</code></pre>`,
+      leftLat: "1,240ms Total", leftTok: "4,420 tokens",
+      rightLat: "2.1ms Total", rightTok: "172 tokens"
+    }
+  ];
+
+  let currentStep = 0;
+  let autoSimInterval = null;
+
+  function setSimStep(stepIndex) {
+    currentStep = stepIndex;
+    for (let i = 0; i < 4; i++) {
+      const btn = document.getElementById('step-btn-' + i);
+      if (btn) {
+        if (i === stepIndex) {
+          btn.className = "sim-tab px-4 py-2 rounded-lg bg-surface-container-high text-primary font-code-sm text-code-sm font-semibold transition-all shadow-sm";
+        } else {
+          btn.className = "sim-tab px-4 py-2 rounded-lg bg-surface-container text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm transition-all";
+        }
+      }
+    }
+    const data = simSteps[stepIndex];
+    document.getElementById('left-sim-display').innerHTML = data.left;
+    document.getElementById('right-sim-display').innerHTML = data.right;
+    document.getElementById('left-sim-lat').innerText = data.leftLat;
+    document.getElementById('left-sim-tok').innerText = data.leftTok;
+    document.getElementById('right-sim-lat').innerText = data.rightLat;
+    document.getElementById('right-sim-tok').innerText = data.rightTok;
+  }
+
+  function runAutoSim() {
+    const runBtn = document.getElementById('run-sim-text');
+    const runIcon = document.getElementById('run-sim-icon');
+    if (autoSimInterval) {
+      clearInterval(autoSimInterval);
+      autoSimInterval = null;
+      runBtn.innerText = "Run Auto Simulation";
+      runIcon.innerText = "play_arrow";
+      return;
+    }
+    runBtn.innerText = "Pause Simulation";
+    runIcon.innerText = "pause";
+    autoSimInterval = setInterval(() => {
+      currentStep = (currentStep + 1) % 4;
+      setSimStep(currentStep);
+    }, 2800);
+  }
+
+  // --- 2. PLAYGROUND LOGIC ---
+  const scenarios = {
+    join_path: {
+      cli: `$ dbctx join_path users order_items\n\n  Found shortest FK traversal path (2 hops):\n  users.id  -->  orders.customer_id  [fk_orders_customer]\n  orders.id -->  order_items.order_id   [fk_items_order]\n\n⚡ executed in 1.8ms | 0 db roundtrips | cache hit`,
+      mcp: `{\n  "jsonrpc": "2.0",\n  "result": {\n    "source": "users",\n    "target": "order_items",\n    "hops": 2,\n    "path": [\n      {"from": "users.id", "to": "orders.customer_id"},\n      {"from": "orders.id", "to": "order_items.order_id"}\n    ]\n  }\n}`,
+      llm: `### Schema Lens FK Traversal\n- **Source Table**: \`users\`\n- **Target Table**: \`order_items\`\n- **Join Path**:\n  \`users JOIN orders ON users.id = orders.customer_id\`\n  \`JOIN order_items ON orders.id = order_items.order_id\``,
+      time: "⚡ 1.8ms"
+    },
+    list_tables: {
+      cli: `$ dbctx tables\n\n  Found 14 tables in schema 'public':\n  - users (id, email, org_id, created_at)\n  - orgs (id, name, tier)\n  - orders (id, customer_id, total, status)\n  - order_items (id, order_id, product_id, qty)\n  - products (id, title, price_cents)\n  ... +9 more tables\n\n⚡ executed in 0.9ms`,
+      mcp: `{\n  "jsonrpc": "2.0",\n  "result": {\n    "tables": ["users", "orgs", "orders", "order_items", "products"],\n    "total_count": 14,\n    "schema_hash": "a9f81d"\n  }\n}`,
+      llm: `### Tables in Context\n\`users\`, \`orgs\`, \`orders\`, \`order_items\`, \`products\`\n*All relations verified against local snapshot.*`,
+      time: "⚡ 0.9ms"
+    },
+    describe_table: {
+      cli: `$ dbctx describe orders\n\nTable: public.orders (UUID primary key)\nColumns:\n  - id            uuid        NOT NULL PK\n  - customer_id   uuid        NOT NULL FK -> users.id\n  - status        order_status NOT NULL DEFAULT 'pending'\n  - amount_cents  integer     NOT NULL\n  - created_at    timestamptz DEFAULT now()\nIndexes:\n  - idx_orders_customer_id ON orders(customer_id)\n\n⚡ executed in 1.2ms`,
+      mcp: `{\n  "table": "orders",\n  "primary_key": ["id"],\n  "foreign_keys": [\n    {"column": "customer_id", "references": "users(id)"}\n  ],\n  "enums": {"status": ["pending", "shipped", "refunded"]}\n}`,
+      llm: `### Table: \`orders\`\n- **id**: \`uuid\` (PK)\n- **customer_id**: \`uuid\` (FK to \`users.id\`)\n- **status**: enum \`order_status\`\n- **amount_cents**: \`integer\``,
+      time: "⚡ 1.2ms"
+    },
+    fuzzy_search: {
+      cli: `$ dbctx search "billing"\n\n  Found 3 matches across columns:\n  - customers.billing_address_id (FK -> addresses.id)\n  - subscriptions.billing_cycle   (enum: monthly|annual)\n  - invoices.billing_email        (text)\n\n⚡ executed in 1.4ms`,
+      mcp: `{\n  "query": "billing",\n  "matches": [\n    {"table": "customers", "column": "billing_address_id"},\n    {"table": "subscriptions", "column": "billing_cycle"},\n    {"table": "invoices", "column": "billing_email"}\n  ]\n}`,
+      llm: `### Columns Matching "billing"\n1. \`customers.billing_address_id\`\n2. \`subscriptions.billing_cycle\`\n3. \`invoices.billing_email\``,
+      time: "⚡ 1.4ms"
+    }
+  };
+
+  let activeScenario = 'join_path';
+  let activeFormat = 'cli';
+
+  function updatePlayground() {
+    const data = scenarios[activeScenario];
+    document.getElementById('playground-code').innerText = data[activeFormat];
+    document.getElementById('play-exec-time').innerText = data.time;
+  }
+
+  function setScenario(scen) {
+    activeScenario = scen;
+    ['join_path', 'list_tables', 'describe_table', 'fuzzy_search'].forEach(s => {
+      const btn = document.getElementById('scen-' + s);
+      if (btn) {
+        if (s === scen) {
+          btn.className = "scen-btn px-3 py-1.5 rounded-lg bg-surface-container-highest text-primary font-code-sm text-code-sm font-semibold transition-all";
+        } else {
+          btn.className = "scen-btn px-3 py-1.5 rounded-lg bg-surface-container text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm transition-all";
+        }
+      }
+    });
+    updatePlayground();
+  }
+
+  function setFormat(fmt) {
+    activeFormat = fmt;
+    ['cli', 'mcp', 'llm'].forEach(f => {
+      const btn = document.getElementById('fmt-' + f);
+      if (btn) {
+        if (f === fmt) {
+          btn.className = "fmt-btn px-3 py-1 rounded bg-surface-container-high text-on-surface font-code-sm text-code-sm font-semibold";
+        } else {
+          btn.className = "fmt-btn px-3 py-1 rounded text-outline hover:text-on-surface font-code-sm text-code-sm";
+        }
+      }
+    });
+    updatePlayground();
+  }
+
+  // --- 3. AGENT CONFIG SELECTOR ---
+  const agentConfigs = {
+    claude: {
+      path: "~/Library/Application Support/Claude/claude_desktop_config.json",
+      json: `{\n  "mcpServers": {\n    "dbctx": {\n      "command": "npx",\n      "args": ["@schemalens/dbctx", "mcp-serve"]\n    }\n  }\n}`
+    },
+    cursor: {
+      path: ".cursor/mcp.json",
+      json: `{\n  "mcpServers": {\n    "dbctx": {\n      "command": "npx",\n      "args": ["@schemalens/dbctx", "mcp-serve"]\n    }\n  }\n}`
+    },
+    antigravity: {
+      path: "~/.config/antigravity/tools.json",
+      json: `{\n  "tools": [\n    {\n      "name": "schema-lens",\n      "type": "stdio",\n      "command": "npx @schemalens/dbctx mcp-serve"\n    }\n  ]\n}`
+    },
+    windsurf: {
+      path: "~/.codeium/windsurf/mcp_config.json",
+      json: `{\n  "mcpServers": {\n    "dbctx": {\n      "command": "npx",\n      "args": ["@schemalens/dbctx", "mcp-serve"]\n    }\n  }\n}`
+    }
+  };
+
+  function setAgentTarget(agent) {
+    ['claude', 'cursor', 'antigravity', 'windsurf'].forEach(a => {
+      const btn = document.getElementById('agent-btn-' + a);
+      if (btn) {
+        if (a === agent) {
+          btn.className = "agent-tab px-4 py-2 rounded-lg bg-surface-container-high text-primary font-code-sm text-code-sm font-semibold transition-all";
+        } else {
+          btn.className = "agent-tab px-4 py-2 rounded-lg bg-surface-container text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm transition-all";
+        }
+      }
+    });
+    const item = agentConfigs[agent];
+    document.getElementById('config-file-path').innerText = item.path;
+    document.getElementById('config-json-code').innerText = item.json;
+  }
+
+  // Initialize defaults on mount
+  document.addEventListener('DOMContentLoaded', () => {
+    setSimStep(0);
+    updatePlayground();
+  });
+</script></main><footer class="w-full bg-surface-container-lowest py-space-xl shadow-[0_-1px_12px_rgba(0,0,0,0.5)]"><div class="max-w-7xl mx-auto px-6 lg:px-12"><div class="grid grid-cols-2 md:grid-cols-5 gap-space-lg mb-space-xl"><div class="col-span-2"><div class="flex items-center gap-space-sm mb-space-sm"><div class="w-6 h-6 rounded bg-surface-container-high flex items-center justify-center"><span class="material-symbols-outlined text-primary text-[16px]">database</span></div><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight">schema-lens</span></div><p class="font-body-sm text-body-sm text-on-surface-variant max-w-sm mb-space-md">Deterministic relational schema compression and context synthesizers for autonomous AI coding agents.</p><div class="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-surface-container font-code-sm text-code-sm text-primary"><span>$</span><span class="text-on-surface">npm i -g @schemalens/dbctx</span></div></div><div><div class="font-badge-caps text-badge-caps uppercase text-outline mb-space-sm">Product</div><ul class="space-y-space-xs font-body-sm text-body-sm"><li class="text-on-surface-variant hover:text-on-surface transition-colors"><a data-path="agent-simulation" href="#">Agent Simulation</a></li><li class="text-on-surface-variant hover:text-on-surface transition-colors"><a data-path="features" href="#">Feature Matrix</a></li><li class="text-on-surface-variant hover:text-on-surface transition-colors"><a data-path="interactive-playground" href="#">Playground</a></li><li class="text-on-surface-variant hover:text-on-surface transition-colors"><a data-path="benchmark-telemetry" href="#">Telemetry Benchmarks</a></li></ul></div><div><div class="font-badge-caps text-badge-caps uppercase text-outline mb-space-sm">Ecosystem</div><ul class="space-y-space-xs font-body-sm text-body-sm"><li class="text-on-surface-variant hover:text-on-surface transition-colors"><a data-path="docs" href="#">MCP Server Spec</a></li><li class="text-on-surface-variant hover:text-on-surface transition-colors"><a data-path="setup" href="#">Cursor Integration</a></li><li class="text-on-surface-variant hover:text-on-surface transition-colors"><a data-path="setup" href="#">Claude Desktop</a></li><li class="text-on-surface-variant hover:text-on-surface transition-colors"><a data-path="setup" href="#">Antigravity Adapter</a></li></ul></div><div><div class="font-badge-caps text-badge-caps uppercase text-outline mb-space-sm">Community</div><ul class="space-y-space-xs font-body-sm text-body-sm"><li class="text-on-surface-variant hover:text-on-surface transition-colors"><a class="flex items-center gap-1.5" href="https://github.com" rel="noopener" target="_blank">GitHub<span class="material-symbols-outlined text-[14px]">open_in_new</span></a></li><li class="text-on-surface-variant hover:text-on-surface transition-colors"><a class="flex items-center gap-1.5" href="https://discord.com" rel="noopener" target="_blank">Discord<span class="material-symbols-outlined text-[14px]">open_in_new</span></a></li><li class="text-on-surface-variant hover:text-on-surface transition-colors"><a class="flex items-center gap-1.5" href="https://twitter.com" rel="noopener" target="_blank">X (Twitter)<span class="material-symbols-outlined text-[14px]">open_in_new</span></a></li><li class="text-on-surface-variant hover:text-on-surface transition-colors"><a data-path="docs" href="#">Security Policy</a></li></ul></div></div><div class="pt-space-md flex flex-col md:flex-row items-center justify-between gap-space-sm text-on-surface-variant font-body-sm text-body-sm"><p>© 2026 schema-lens • Apache 2.0 / MIT • Built for the MCP Ecosystem</p><div class="flex items-center gap-space-md"><span class="flex items-center gap-1 text-tertiary font-code-sm text-code-sm"><span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>All Systems Operational</span><span class="font-code-sm text-code-sm text-outline">SHA: 4cd7f6a</span></div></div></div></footer></body></html>

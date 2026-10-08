@@ -918,22 +918,22 @@ const AGENT_CONFIGS = {
   claude: {
     label: "Claude Desktop",
     path: "~/Library/Application Support/Claude/claude_desktop_config.json",
-    json: `{\n  "mcpServers": {\n    "dbctx": {\n      "command": "npx",\n      "args": ["@schemalens/dbctx", "mcp-serve"]\n    }\n  }\n}`,
+    json: `{\n  "mcpServers": {\n    "dbctx": {\n      "command": "npx",\n      "args": ["@jaydeepramanuj/schema-lens", "mcp-serve"]\n    }\n  }\n}`,
   },
   cursor: {
     label: "Cursor",
     path: ".cursor/mcp.json",
-    json: `{\n  "mcpServers": {\n    "dbctx": {\n      "command": "npx",\n      "args": ["@schemalens/dbctx", "mcp-serve"]\n    }\n  }\n}`,
+    json: `{\n  "mcpServers": {\n    "dbctx": {\n      "command": "npx",\n      "args": ["@jaydeepramanuj/schema-lens", "mcp-serve"]\n    }\n  }\n}`,
   },
   antigravity: {
     label: "Antigravity / Gemini",
     path: "~/.config/antigravity/tools.json",
-    json: `{\n  "tools": [\n    {\n      "name": "schema-lens",\n      "type": "stdio",\n      "command": "npx @schemalens/dbctx mcp-serve"\n    }\n  ]\n}`,
+    json: `{\n  "tools": [\n    {\n      "name": "schema-lens",\n      "type": "stdio",\n      "command": "npx @jaydeepramanuj/schema-lens mcp-serve"\n    }\n  ]\n}`,
   },
   windsurf: {
     label: "Windsurf / Copilot",
     path: "~/.codeium/windsurf/mcp_config.json",
-    json: `{\n  "mcpServers": {\n    "dbctx": {\n      "command": "npx",\n      "args": ["@schemalens/dbctx", "mcp-serve"]\n    }\n  }\n}`,
+    json: `{\n  "mcpServers": {\n    "dbctx": {\n      "command": "npx",\n      "args": ["@jaydeepramanuj/schema-lens", "mcp-serve"]\n    }\n  }\n}`,
   },
 } as const;
 
@@ -1004,7 +1004,7 @@ function SetupSection() {
 // ─── BOTTOM CTA ───────────────────────────────────────────────────────────────
 
 function BottomCTA() {
-  const { copied, copy } = useCopyButton("npm i -g @schemalens/dbctx");
+  const { copied, copy } = useCopyButton("npm i -g @jaydeepramanuj/schema-lens");
   return (
     <section className="w-full py-20 bg-[#10131c] relative overflow-hidden">
       <div className="pointer-events-none absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[360px] bg-[#4cd7f6]/10 rounded-full blur-[160px]" />
@@ -1022,7 +1022,7 @@ function BottomCTA() {
         <div className="flex flex-wrap items-center justify-center gap-4 mb-10">
           <button onClick={copy} className="flex items-center gap-2 px-6 py-3.5 rounded-lg bg-[#4cd7f6] text-[#003640] font-semibold text-[14px] shadow-lg shadow-[#4cd7f6]/25 hover:bg-[#acedff] transition-all">
             {copied ? <Check size={16} /> : <Terminal size={16} />}
-            <span>{copied ? "Copied!" : "npm i -g @schemalens/dbctx"}</span>
+            <span>{copied ? "Copied!" : "npm i -g @jaydeepramanuj/schema-lens"}</span>
           </button>
           <a href="https://github.com/JaydeepRamanuj/schema-lens" target="_blank" rel="noopener" className="flex items-center gap-2 px-6 py-3.5 rounded-lg bg-[#272a33] hover:bg-[#32343e] text-[#e1e2ee] font-semibold text-[14px] transition-colors">
             <Star size={16} className="text-[#4cd7f6]" />
@@ -1059,7 +1059,7 @@ function Footer() {
               Deterministic relational schema compression and context synthesizers for autonomous AI coding agents.
             </p>
             <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-[#1d1f28] font-mono text-[11px] text-[#4cd7f6]">
-              <span>$</span><span className="text-[#e1e2ee]">npm i -g @schemalens/dbctx</span>
+              <span>$</span><span className="text-[#e1e2ee]">npm i -g @jaydeepramanuj/schema-lens</span>
             </div>
           </div>
           {[

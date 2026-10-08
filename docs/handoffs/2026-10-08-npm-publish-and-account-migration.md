@@ -12,9 +12,9 @@ Migrate the `schema-lens` project repository from a secondary account to the pri
 - **Pending**: The final `npm publish` execution.
 
 ## Key Files Involved
-- `package.json`: Holds the target package name (`schema-lens`), version (`0.1.0`), and metadata which were verified for the publish step.
+- `package.json`: Holds the target package name (`@jaydeepramanuj/schema-lens`), version (`0.1.0`), and metadata which were verified for the publish step.
 
 ## Next Steps
 1. Run the final `npm publish` command in the root directory to release the package.
-2. Verify the package is live and accessible on `npmjs.com/package/schema-lens`.
+2. Verify the package is live and accessible on `npmjs.com/package/@jaydeepramanuj/schema-lens`.
 3. When resuming work on an office machine, ensure local Git config (`git config --local`) is explicitly set to use the primary name and email to avoid cross-contaminating with work credentials.

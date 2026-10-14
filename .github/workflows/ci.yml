@@ -1,0 +1,112 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: 22
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci
+      - run: npx tsc --noEmit
+      - run: npm run build
+
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci
+      - run: npm test
+
+  integration:
+    # This matrix is the only source for any "Tested on PostgreSQL X–Y" claim.
+    name: integration (postgres ${{ matrix.postgres }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        postgres: ["14", "15", "16", "17", "18"]
+    services:
+      postgres:
+        image: postgres:${{ matrix.postgres }}
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DBCTX_TEST_URL: postgres://postgres:postgres@localhost:5432/postgres
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci
+      # Each test file creates its own database and loads test/fixtures/schema.sql (QA-2).
+      - run: npm run test:integration
+      # TODO(QA-3/QA-4): add `npm run test:e2e` once the CLI and MCP e2e tests exist.
+
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      # QA-7: the npm tarball may only contain the allowlisted files.
+      - run: npm run check:pack
+
+  docs-guards:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # RB-1: no instruction may install or import the unrelated unscoped `dbctx` package.
+      - name: No references to the unscoped dbctx package
+        run: |
+          set +e
+          grep -rnE 'npm (i|install)( -g)? dbctx|npx (-y )?dbctx|from "dbctx"|"dbctx", "mcp-serve"' \
+            README.md docs/*.md website/content website/app skills src/cli/docs.ts
+          status=$?
+          set -e
+          if [ "$status" -eq 0 ]; then
+            echo "::error::Found install instructions for the unscoped 'dbctx' package. Use @jaydeepramanuj/schema-lens."
+            exit 1
+          elif [ "$status" -ne 1 ]; then
+            echo "::error::grep failed (exit $status); a searched path may be missing."
+            exit 1
+          fi
+      # TODO(LP Track A): grep for removed landing-page claims.
+      # TODO(QA-6): run scripts/check-docs.ts and check the captured samples are up to date.
+
+  # TODO(DEP-3): website job (build the site, check internal links).

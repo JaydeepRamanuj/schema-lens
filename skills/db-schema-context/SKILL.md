@@ -4,15 +4,19 @@ description: >
   Use whenever writing or changing code that touches the database
   (queries, API endpoints, validation, migrations, types). Provides accurate,
   current table, column, constraint and relation info via MCP tools backed
-  by a local snapshot verified against the live DB on every call.
+  by a local snapshot that is checked against the live database for changes
+  (at most every few seconds).
   Do not guess schema details; look them up with these tools first.
 ---
 
 # Database Schema Context (`dbctx` MCP Server)
 
 Use the `dbctx` MCP tools to look up the real PostgreSQL schema before writing
-any database-related code. The data comes from a local snapshot that is verified
-against the live database on every call — so it is always current.
+any database-related code. The data comes from a local snapshot. Before
+answering, the server checks the live database for structural changes (at most
+once per `ttlSeconds`, default 5 s) and re-extracts the snapshot if columns,
+constraints, indexes or enums changed. Comments, RLS policies, triggers and view
+definitions are not part of that check. See [Snapshot freshness](https://github.com/JaydeepRamanuj/schema-lens/blob/main/docs/snapshot-freshness.md).
 
 Tools are provided by the MCP server named `dbctx`. Your client may prefix the
 names (e.g. `mcp__dbctx__describe_tables`). Examples below show the tool name
@@ -20,15 +24,10 @@ followed by its arguments.
 
 ---
 
-## Self-Service Documentation
+## Tool Documentation
 
-Every tool's JSON schema file (located at the MCP server's schema directory)
-contains the full parameter definitions, types, required fields, and
-per-parameter descriptions. **If you are ever unsure about how to call a
-tool**, read its schema file before invoking it.
-
-This is the MCP-native equivalent of a `--help` flag — the tool descriptions
-and Zod-derived parameter schemas **are** the documentation.
+Each tool's description and input schema are available from your MCP client's
+tool list. If you are unsure how to call a tool, check its input schema there.
 
 ---
 
@@ -165,7 +164,8 @@ Returns snapshot age, table count, DB reachability, and staleness flag.
 
 ## Output Format
 
-All MCP tools return structured JSON. Every response includes a `_meta` block:
+All MCP tools return structured JSON. Every tool except `get_status` includes a
+`_meta` block:
 
 ```json
 {
@@ -187,8 +187,10 @@ All MCP tools return structured JSON. Every response includes a `_meta` block:
 - If the response shows `"stale": true`, warn the user that the DB was
   unreachable and the data may be out of date.
 - Do not ask for or use database credentials. The tool handles connections.
-- If a table is not found, run `list_tables` first — the name may be
-  schema-qualified (e.g. `public.orders` not just `orders`).
+- Bare table names resolve to the `public` schema. For tables in other schemas,
+  use `schema.table` (e.g. `analytics.page_views`).
+- If a table is not found, run `list_tables` or `search_schema` to find its
+  exact name.
 - Use `connection_name` only if the project has multiple database profiles
   configured in `dbctx.config.json`. Omit it to use the default profile.
 

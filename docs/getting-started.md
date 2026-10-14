@@ -10,7 +10,7 @@
 ### Global (recommended)
 
 ```bash
-npm install -g dbctx
+npm install -g @jaydeepramanuj/schema-lens
 ```
 
 After installation, `dbctx` is available as a system-wide command.
@@ -18,7 +18,7 @@ After installation, `dbctx` is available as a system-wide command.
 ### Local / npx
 
 ```bash
-npx dbctx <command>
+npx -y @jaydeepramanuj/schema-lens <command>
 ```
 
 ### From source

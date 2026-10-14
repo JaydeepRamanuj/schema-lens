@@ -1,12 +1,13 @@
 {
   "name": "@jaydeepramanuj/schema-lens",
-  "version": "0.1.0",
-  "description": "Local PostgreSQL schema store for coding agents — fast, offline-capable, always-fresh.",
+  "version": "0.1.1",
+  "description": "Local PostgreSQL schema snapshot for coding agents, with a CLI and MCP server. Detects schema changes and works offline.",
   "keywords": [
     "postgresql",
     "postgres",
     "schema",
     "mcp",
+    "model-context-protocol",
     "ai",
     "agents",
     "cli",
@@ -36,10 +37,10 @@
   },
   "files": [
     "dist/",
-    "docs/",
     "skills/",
     "README.md",
     "LICENSE",
+    "CHANGELOG.md",
     "dbctx.config.json.example"
   ],
   "scripts": {
@@ -49,7 +50,8 @@
     "prepublishOnly": "npm test && npm run build",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:integration": "vitest run --config vitest.integration.config.ts"
+    "test:integration": "vitest run --config vitest.integration.config.ts",
+    "check:pack": "tsx scripts/check-pack.ts"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.32.1",
@@ -58,6 +60,8 @@
     "zod": "^3.23.0"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.5.10",
+    "@electric-sql/pglite-socket": "^0.2.13",
     "@types/pg": "^8.11.0",
     "tsx": "^4.0.0",
     "typescript": "^5.4.0",

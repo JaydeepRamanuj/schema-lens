@@ -1,7 +1,8 @@
 // ============================================================
 // integration/live.test.ts — end-to-end tests against a real DB.
-// Requires: DBCTX_URL env var pointing to a live PostgreSQL instance.
-// Run: DBCTX_URL=<url> npm run test:integration
+// Runs against the fixture in test/fixtures/schema.sql via test/helpers/db.ts:
+// a Postgres server from DBCTX_TEST_URL (CI) or an in-process PGlite (local).
+// Run: npm run test:integration
 // ============================================================
 
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
@@ -10,24 +11,22 @@ import { extract } from "../../src/core/extractor/custom.js";
 import { normalize } from "../../src/core/normalize.js";
 import { buildFingerprint, checkFreshness } from "../../src/core/freshness.js";
 import { listTables, related, joinPath, getEnums } from "../../src/core/queries.js";
+import { createTestDb, FIXTURE_SCHEMAS, type TestDb } from "../helpers/db.js";
 
-const DB_URL = process.env["DBCTX_URL"];
-
-// Skip the entire suite if no URL is provided
-const runSuite = !!DB_URL;
-
-describe.skipIf(!runSuite)("Live database integration", () => {
+describe("Live database integration", () => {
+  let testDb: TestDb;
   let client: pg.Client;
-  const schemas = ["public"];
+  const schemas = FIXTURE_SCHEMAS;
 
   beforeAll(async () => {
-    if (!DB_URL) return;
-    client = new pg.Client({ connectionString: DB_URL });
+    testDb = await createTestDb();
+    client = new pg.Client({ connectionString: testDb.url });
     await client.connect();
   });
 
   afterAll(async () => {
     if (client) await client.end();
+    if (testDb) await testDb.cleanup();
   });
 
   it("connects to the database successfully", async () => {
@@ -96,6 +95,49 @@ describe.skipIf(!runSuite)("Live database integration", () => {
     // With a 60s TTL, just-built fingerprint should be served from cache
     const { result } = await checkFreshness(client, schemas, fp, 60);
     expect(result.isFresh).toBe(true);
+  });
+
+  describe("fixture shape", () => {
+    let schema: ReturnType<typeof normalize>;
+
+    beforeAll(async () => {
+      const raw = await extract(client, schemas);
+      schema = normalize(raw, {
+        connectionId: "integration-test",
+        dbName: "postgres",
+        generatedAt: new Date().toISOString(),
+      });
+    });
+
+    it("extracts tables and views from both fixture schemas", () => {
+      expect(schema.tables["public.users"]?.type).toBe("table");
+      expect(schema.tables["public.orders"]?.type).toBe("table");
+      expect(schema.tables["public.recent_orders"]?.type).toBe("view");
+      expect(schema.tables["analytics.page_views"]?.type).toBe("table");
+    });
+
+    it("extracts the enum, RLS policy and trigger on orders", () => {
+      expect(getEnums(schema, "order_status").enums["public.order_status"]?.values).toEqual([
+        "pending",
+        "paid",
+        "shipped",
+        "cancelled",
+        "refunded",
+      ]);
+      const orders = schema.tables["public.orders"];
+      expect(orders?.rlsEnabled).toBe(true);
+      expect(orders?.policies.map((p) => p.name)).toContain("orders_owner");
+      expect(orders?.triggers.map((t) => t.name)).toContain("orders_touch");
+    });
+
+    it("follows the cross-schema FK from analytics into public", () => {
+      expect(schema.relations["analytics.page_views"]?.references).toContain("public.users");
+      expect(related(schema, "analytics.page_views").nodes).toContain("public.users");
+    });
+
+    it("finds an FK join path through the fixture", () => {
+      expect(joinPath(schema, "order_items", "users").path).not.toBeNull();
+    });
   });
 
   it("extract() query runs in under 10 seconds on this schema", async () => {

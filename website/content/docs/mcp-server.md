@@ -36,7 +36,7 @@ Add the following to your agent's MCP configuration file. Common locations:
   "mcpServers": {
     "dbctx": {
       "command": "npx",
-      "args": ["dbctx", "mcp-serve"],
+      "args": ["-y", "@jaydeepramanuj/schema-lens", "mcp-serve"],
       "env": {}
     }
   }
@@ -64,11 +64,11 @@ Add the following to your agent's MCP configuration file. Common locations:
   "mcpServers": {
     "dbctx-prod": {
       "command": "npx",
-      "args": ["dbctx", "mcp-serve", "--name", "prod"]
+      "args": ["-y", "@jaydeepramanuj/schema-lens", "mcp-serve", "--name", "prod"]
     },
     "dbctx-staging": {
       "command": "npx",
-      "args": ["dbctx", "mcp-serve", "--name", "staging"]
+      "args": ["-y", "@jaydeepramanuj/schema-lens", "mcp-serve", "--name", "staging"]
     }
   }
 }
@@ -81,7 +81,7 @@ Add the following to your agent's MCP configuration file. Common locations:
   "mcpServers": {
     "dbctx": {
       "command": "npx",
-      "args": ["dbctx", "mcp-serve"],
+      "args": ["-y", "@jaydeepramanuj/schema-lens", "mcp-serve"],
       "env": {
         "DBCTX_URL": "postgresql://user:password@localhost:5432/mydb"
       }

@@ -1,6 +1,6 @@
 # schema-lens
 
-**Local PostgreSQL schema store for coding agents — fast, offline-capable, always-fresh.**
+**Local PostgreSQL schema snapshot for coding agents, with a CLI and MCP server. Detects schema changes and works offline.**
 
 `schema-lens` caches your database schema locally and serves accurate, structured answers in milliseconds. Instead of your AI agent firing multiple slow SQL introspection queries per task, it calls one fast local command and gets back exactly what it needs.
 
@@ -21,10 +21,10 @@
 
 ```bash
 # Global CLI (recommended)
-npm install -g dbctx
+npm install -g @jaydeepramanuj/schema-lens
 
 # One-off / no install
-npx dbctx <command>
+npx -y @jaydeepramanuj/schema-lens <command>
 ```
 
 Requires **Node.js ≥ 18**.
@@ -65,7 +65,7 @@ Add to your agent's MCP config (Claude Desktop, Cursor, Antigravity, etc.):
   "mcpServers": {
     "dbctx": {
       "command": "npx",
-      "args": ["dbctx", "mcp-serve"]
+      "args": ["-y", "@jaydeepramanuj/schema-lens", "mcp-serve"]
     }
   }
 }
@@ -78,13 +78,13 @@ With a named profile from `dbctx.config.json`:
   "mcpServers": {
     "dbctx": {
       "command": "npx",
-      "args": ["dbctx", "mcp-serve", "--name", "myapp-dev"]
+      "args": ["-y", "@jaydeepramanuj/schema-lens", "mcp-serve", "--name", "myapp-dev"]
     }
   }
 }
 ```
 
-See [docs/mcp-server.md](./docs/mcp-server.md) for the full tool reference and multi-database setup.
+See [docs/mcp-server.md](https://github.com/JaydeepRamanuj/schema-lens/blob/main/docs/mcp-server.md) for the full tool reference and multi-database setup.
 
 ---
 
@@ -111,7 +111,7 @@ cp dbctx.config.json.example dbctx.config.json
 }
 ```
 
-See [docs/configuration.md](./docs/configuration.md) for all options.
+See [docs/configuration.md](https://github.com/JaydeepRamanuj/schema-lens/blob/main/docs/configuration.md) for all options.
 
 ---
 
@@ -141,7 +141,7 @@ See [docs/configuration.md](./docs/configuration.md) for all options.
 
 **Global options** (all commands): `--url`, `--name`, `--format json|md|compact`, `--global`
 
-See [docs/commands.md](./docs/commands.md) for the full reference.
+See [docs/commands.md](https://github.com/JaydeepRamanuj/schema-lens/blob/main/docs/commands.md) for the full reference.
 
 ---
 
@@ -161,33 +161,33 @@ On every query, `dbctx` runs a lightweight fingerprint check against the live DB
 
 If the database is unreachable, it serves the cached snapshot and marks the response `stale: true`.
 
-See [docs/snapshot-freshness.md](./docs/snapshot-freshness.md) for details.
+See [docs/snapshot-freshness.md](https://github.com/JaydeepRamanuj/schema-lens/blob/main/docs/snapshot-freshness.md) for details.
 
 ---
 
 ## Programmatic API
 
 ```typescript
-import { listTables, describe, getColumns } from "dbctx";
-import { readSchema } from "dbctx";
+import { listTables, describe, getColumns } from "@jaydeepramanuj/schema-lens";
+import { readSchema } from "@jaydeepramanuj/schema-lens";
 
 const schema = await readSchema(connectionId);
 const result = listTables(schema, "order");
 ```
 
-See [`src/core/index.ts`](./src/core/index.ts) for the full exported surface.
+See [`src/core/index.ts`](https://github.com/JaydeepRamanuj/schema-lens/blob/main/src/core/index.ts) for the full exported surface.
 
 ---
 
 ## Links
 
-- [Getting Started](./docs/getting-started.md)
-- [Configuration](./docs/configuration.md)
-- [Commands Reference](./docs/commands.md)
-- [Output Formats](./docs/output-formats.md)
-- [MCP Server](./docs/mcp-server.md)
-- [Schema Data Model](./docs/schema-data-model.md)
-- [Snapshot Freshness](./docs/snapshot-freshness.md)
+- [Getting Started](https://github.com/JaydeepRamanuj/schema-lens/blob/main/docs/getting-started.md)
+- [Configuration](https://github.com/JaydeepRamanuj/schema-lens/blob/main/docs/configuration.md)
+- [Commands Reference](https://github.com/JaydeepRamanuj/schema-lens/blob/main/docs/commands.md)
+- [Output Formats](https://github.com/JaydeepRamanuj/schema-lens/blob/main/docs/output-formats.md)
+- [MCP Server](https://github.com/JaydeepRamanuj/schema-lens/blob/main/docs/mcp-server.md)
+- [Schema Data Model](https://github.com/JaydeepRamanuj/schema-lens/blob/main/docs/schema-data-model.md)
+- [Snapshot Freshness](https://github.com/JaydeepRamanuj/schema-lens/blob/main/docs/snapshot-freshness.md)
 - [Changelog](./CHANGELOG.md)
 
 ---

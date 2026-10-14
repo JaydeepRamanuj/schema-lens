@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.1.1] — 2026-10-15
+
+Packaging and documentation fixes only. No behaviour changes.
+
+### Fixed
+
+- Install instructions in the README and docs pointed at `dbctx`, an unrelated third-party npm package. They now use `@jaydeepramanuj/schema-lens` (`npm install -g @jaydeepramanuj/schema-lens` or `npx -y @jaydeepramanuj/schema-lens <command>`). The installed command is still `dbctx`.
+- MCP config examples now pass `-y` to `npx`, so the server no longer hangs on npx's install prompt when launched by an MCP client.
+- README links to the docs now resolve on npmjs.com.
+
+### Changed
+
+- The npm package now contains only `dist/`, `skills/`, `README.md`, `LICENSE`, `CHANGELOG.md` and `dbctx.config.json.example`. Internal project notes that were accidentally included in 0.1.0 are no longer shipped.
+- Package description reworded to "Local PostgreSQL schema snapshot for coding agents, with a CLI and MCP server. Detects schema changes and works offline."
+
 ## [0.1.0] — 2026-10-06
 
 ### Added

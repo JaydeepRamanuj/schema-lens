@@ -1,6 +1,6 @@
 {
   "name": "@jaydeepramanuj/schema-lens",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Local PostgreSQL schema snapshot for coding agents, with a CLI and MCP server. Detects schema changes and works offline.",
   "keywords": [
     "postgresql",

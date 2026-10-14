@@ -93,11 +93,12 @@ These hashes are computed by the database itself using the SQL in `freshness.ts`
 
 **What does NOT trigger a refresh:**
 
-- Table comments (not included in the fingerprint)
+- Table and column comments
 - Trigger definitions
 - RLS policy changes
+- View body changes (`CREATE OR REPLACE VIEW` with the same columns)
 
-> **Limitation:** triggers and policies are not fingerprinted. If you change a trigger or RLS policy, run `dbctx refresh` manually.
+> **Limitation:** these are not fingerprinted. After changing any of them, run `dbctx refresh --force`.
 
 ---
 
@@ -149,11 +150,12 @@ rm .schema-cache/<connection-id>/.lock
 ## Forcing a refresh
 
 ```bash
-dbctx refresh           # always re-extracts (refresh bypasses freshness check)
-dbctx init              # same as refresh, but also prints the connection ID
+dbctx refresh --force   # always re-extracts
+dbctx refresh           # re-checks the fingerprint; re-extracts only if it changed
+dbctx init              # always re-extracts, and prints the connection ID
 ```
 
-Use `refresh` after running a database migration to ensure the snapshot is up to date before any agent work begins.
+Use `dbctx refresh --force` after running a database migration to ensure the snapshot is up to date before any agent work begins.
 
 ---
 

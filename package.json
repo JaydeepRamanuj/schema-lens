@@ -50,7 +50,8 @@
     "prepublishOnly": "npm test && npm run build",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:integration": "vitest run --config vitest.integration.config.ts"
+    "test:integration": "vitest run --config vitest.integration.config.ts",
+    "check:pack": "tsx scripts/check-pack.ts"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.32.1",

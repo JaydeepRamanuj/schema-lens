@@ -36,10 +36,10 @@
   },
   "files": [
     "dist/",
-    "docs/",
     "skills/",
     "README.md",
     "LICENSE",
+    "CHANGELOG.md",
     "dbctx.config.json.example"
   ],
   "scripts": {

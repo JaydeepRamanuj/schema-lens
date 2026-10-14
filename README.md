@@ -84,7 +84,7 @@ With a named profile from `dbctx.config.json`:
 }
 ```
 
-See [docs/mcp-server.md](./docs/mcp-server.md) for the full tool reference and multi-database setup.
+See [docs/mcp-server.md](https://github.com/JaydeepRamanuj/schema-lens/blob/main/docs/mcp-server.md) for the full tool reference and multi-database setup.
 
 ---
 
@@ -111,7 +111,7 @@ cp dbctx.config.json.example dbctx.config.json
 }
 ```
 
-See [docs/configuration.md](./docs/configuration.md) for all options.
+See [docs/configuration.md](https://github.com/JaydeepRamanuj/schema-lens/blob/main/docs/configuration.md) for all options.
 
 ---
 
@@ -141,7 +141,7 @@ See [docs/configuration.md](./docs/configuration.md) for all options.
 
 **Global options** (all commands): `--url`, `--name`, `--format json|md|compact`, `--global`
 
-See [docs/commands.md](./docs/commands.md) for the full reference.
+See [docs/commands.md](https://github.com/JaydeepRamanuj/schema-lens/blob/main/docs/commands.md) for the full reference.
 
 ---
 
@@ -161,7 +161,7 @@ On every query, `dbctx` runs a lightweight fingerprint check against the live DB
 
 If the database is unreachable, it serves the cached snapshot and marks the response `stale: true`.
 
-See [docs/snapshot-freshness.md](./docs/snapshot-freshness.md) for details.
+See [docs/snapshot-freshness.md](https://github.com/JaydeepRamanuj/schema-lens/blob/main/docs/snapshot-freshness.md) for details.
 
 ---
 
@@ -175,19 +175,19 @@ const schema = await readSchema(connectionId);
 const result = listTables(schema, "order");
 ```
 
-See [`src/core/index.ts`](./src/core/index.ts) for the full exported surface.
+See [`src/core/index.ts`](https://github.com/JaydeepRamanuj/schema-lens/blob/main/src/core/index.ts) for the full exported surface.
 
 ---
 
 ## Links
 
-- [Getting Started](./docs/getting-started.md)
-- [Configuration](./docs/configuration.md)
-- [Commands Reference](./docs/commands.md)
-- [Output Formats](./docs/output-formats.md)
-- [MCP Server](./docs/mcp-server.md)
-- [Schema Data Model](./docs/schema-data-model.md)
-- [Snapshot Freshness](./docs/snapshot-freshness.md)
+- [Getting Started](https://github.com/JaydeepRamanuj/schema-lens/blob/main/docs/getting-started.md)
+- [Configuration](https://github.com/JaydeepRamanuj/schema-lens/blob/main/docs/configuration.md)
+- [Commands Reference](https://github.com/JaydeepRamanuj/schema-lens/blob/main/docs/commands.md)
+- [Output Formats](https://github.com/JaydeepRamanuj/schema-lens/blob/main/docs/output-formats.md)
+- [MCP Server](https://github.com/JaydeepRamanuj/schema-lens/blob/main/docs/mcp-server.md)
+- [Schema Data Model](https://github.com/JaydeepRamanuj/schema-lens/blob/main/docs/schema-data-model.md)
+- [Snapshot Freshness](https://github.com/JaydeepRamanuj/schema-lens/blob/main/docs/snapshot-freshness.md)
 - [Changelog](./CHANGELOG.md)
 
 ---

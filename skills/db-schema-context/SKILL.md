@@ -14,8 +14,9 @@ Use the `dbctx` MCP tools to look up the real PostgreSQL schema before writing
 any database-related code. The data comes from a local snapshot that is verified
 against the live database on every call — so it is always current.
 
-All tools are lazily loaded under the `dbctx` MCP server. Call them via
-`call_mcp_tool` with `ServerName: "dbctx"`.
+Tools are provided by the MCP server named `dbctx`. Your client may prefix the
+names (e.g. `mcp__dbctx__describe_tables`). Examples below show the tool name
+followed by its arguments.
 
 ---
 
@@ -44,8 +45,8 @@ Use **one** of these depending on what you know:
 | A column name pattern | `find_columns` | `pattern` — finds every table containing a matching column |
 
 **Example** — find everything related to "document":
-```json
-{ "ServerName": "dbctx", "ToolName": "search_schema", "Arguments": { "keyword": "document" } }
+```
+search_schema {"keyword": "document"}
 ```
 
 ### 2. Inspect — get full structural detail
@@ -57,36 +58,23 @@ indexes, foreign keys, policies, and triggers.
 > **all** the tables you need in a single call instead of making one call per
 > table.
 
-```json
-{
-  "ServerName": "dbctx",
-  "ToolName": "describe_tables",
-  "Arguments": {
-    "tables": ["users", "documents", "document_versions"]
-  }
-}
+```
+describe_tables {"tables": ["users", "documents", "document_versions"]}
 ```
 
 **Use `include` to limit the response** when you only need specific sections.
 Valid sections: `columns`, `constraints`, `indexes`, `fks`, `policies`, `triggers`.
 
-```json
-{
-  "ServerName": "dbctx",
-  "ToolName": "describe_tables",
-  "Arguments": {
-    "tables": ["users", "documents"],
-    "include": ["columns", "fks"]
-  }
-}
+```
+describe_tables {"tables": ["users", "documents"], "include": ["columns", "fks"]}
 ```
 
 This keeps the response payload small when you don't need full detail.
 
 For a quick column-only lookup on a single table, `get_columns` is a lighter
 alternative:
-```json
-{ "ServerName": "dbctx", "ToolName": "get_columns", "Arguments": { "table": "users" } }
+```
+get_columns {"table": "users"}
 ```
 
 ### 3. Explore relationships
@@ -97,40 +85,36 @@ alternative:
 | Shortest FK path between two tables | `join_path` | `from`, `to` |
 | Columns shared across N tables (for JOINs) | `find_common_columns` | `tables` (array, min 2), optional `pattern` |
 
-```json
-{ "ServerName": "dbctx", "ToolName": "get_related_tables", "Arguments": { "table": "documents", "depth": 2 } }
 ```
-```json
-{ "ServerName": "dbctx", "ToolName": "join_path", "Arguments": { "from": "users", "to": "comments" } }
+get_related_tables {"table": "documents", "depth": 2}
 ```
-```json
-{ "ServerName": "dbctx", "ToolName": "find_common_columns", "Arguments": { "tables": ["users", "posts"] } }
+```
+join_path {"from": "users", "to": "comments"}
+```
+```
+find_common_columns {"tables": ["users", "posts"]}
 ```
 
 ### 4. Check validation & constraints
 
-```json
-{
-  "ServerName": "dbctx",
-  "ToolName": "get_column_constraints",
-  "Arguments": { "table": "users", "columns": ["email", "id"] }
-}
+```
+get_column_constraints {"table": "users", "columns": ["email", "id"]}
 ```
 
 Returns PK, FK, UNIQUE, and CHECK constraints that touch the specified columns.
 
 ### 5. Enum values
 
-```json
-{ "ServerName": "dbctx", "ToolName": "get_enums", "Arguments": {} }
+```
+get_enums {}
 ```
 
 Pass `name` to filter: `{ "name": "user_role" }`.
 
 ### 6. RLS policies
 
-```json
-{ "ServerName": "dbctx", "ToolName": "get_policies", "Arguments": { "table": "documents" } }
+```
+get_policies {"table": "documents"}
 ```
 
 Omit `table` to get all policies across every table.
@@ -144,14 +128,14 @@ Omit `table` to get all policies across every table.
 | `find_orphans` | Tables with zero FK relationships (isolated from the rest of the schema) |
 | `check_index` | Check whether a covering index exists for a set of columns on a table |
 
-```json
-{ "ServerName": "dbctx", "ToolName": "check_index", "Arguments": { "table": "posts", "columns": ["author_id", "created_at"] } }
+```
+check_index {"table": "posts", "columns": ["author_id", "created_at"]}
 ```
 
 ### 8. Freshness check
 
-```json
-{ "ServerName": "dbctx", "ToolName": "get_status", "Arguments": {} }
+```
+get_status {}
 ```
 
 Returns snapshot age, table count, DB reachability, and staleness flag.

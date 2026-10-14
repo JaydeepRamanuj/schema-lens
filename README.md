@@ -21,10 +21,10 @@
 
 ```bash
 # Global CLI (recommended)
-npm install -g dbctx
+npm install -g @jaydeepramanuj/schema-lens
 
 # One-off / no install
-npx dbctx <command>
+npx -y @jaydeepramanuj/schema-lens <command>
 ```
 
 Requires **Node.js ≥ 18**.
@@ -65,7 +65,7 @@ Add to your agent's MCP config (Claude Desktop, Cursor, Antigravity, etc.):
   "mcpServers": {
     "dbctx": {
       "command": "npx",
-      "args": ["dbctx", "mcp-serve"]
+      "args": ["-y", "@jaydeepramanuj/schema-lens", "mcp-serve"]
     }
   }
 }
@@ -78,7 +78,7 @@ With a named profile from `dbctx.config.json`:
   "mcpServers": {
     "dbctx": {
       "command": "npx",
-      "args": ["dbctx", "mcp-serve", "--name", "myapp-dev"]
+      "args": ["-y", "@jaydeepramanuj/schema-lens", "mcp-serve", "--name", "myapp-dev"]
     }
   }
 }
@@ -168,8 +168,8 @@ See [docs/snapshot-freshness.md](./docs/snapshot-freshness.md) for details.
 ## Programmatic API
 
 ```typescript
-import { listTables, describe, getColumns } from "dbctx";
-import { readSchema } from "dbctx";
+import { listTables, describe, getColumns } from "@jaydeepramanuj/schema-lens";
+import { readSchema } from "@jaydeepramanuj/schema-lens";
 
 const schema = await readSchema(connectionId);
 const result = listTables(schema, "order");

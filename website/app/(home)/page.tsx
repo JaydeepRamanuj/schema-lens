@@ -180,7 +180,7 @@ function Header() {
 // ─── HERO ─────────────────────────────────────────────────────────────────────
 
 function HeroSection() {
-  const { copied: heroCopied, copy: copyHero } = useCopyButton("npx dbctx init");
+  const { copied: heroCopied, copy: copyHero } = useCopyButton("npx -y @jaydeepramanuj/schema-lens init");
 
   return (
     <section className="relative w-full overflow-hidden pt-32 pb-16">
@@ -233,7 +233,7 @@ function HeroSection() {
             className="flex items-center gap-2.5 px-4 py-3 rounded-lg bg-[#272a33] hover:bg-[#32343e] transition-all group font-mono text-[13px] text-[#e1e2ee]"
           >
             <span className="text-[#4cd7f6] font-bold">$</span>
-            <span>npx dbctx init</span>
+            <span>npx -y @jaydeepramanuj/schema-lens init</span>
             {heroCopied ? (
               <Check size={16} className="text-[#4edea3]" />
             ) : (
@@ -918,22 +918,22 @@ const AGENT_CONFIGS = {
   claude: {
     label: "Claude Desktop",
     path: "~/Library/Application Support/Claude/claude_desktop_config.json",
-    json: `{\n  "mcpServers": {\n    "dbctx": {\n      "command": "npx",\n      "args": ["@jaydeepramanuj/schema-lens", "mcp-serve"]\n    }\n  }\n}`,
+    json: `{\n  "mcpServers": {\n    "dbctx": {\n      "command": "npx",\n      "args": ["-y", "@jaydeepramanuj/schema-lens", "mcp-serve"]\n    }\n  }\n}`,
   },
   cursor: {
     label: "Cursor",
     path: ".cursor/mcp.json",
-    json: `{\n  "mcpServers": {\n    "dbctx": {\n      "command": "npx",\n      "args": ["@jaydeepramanuj/schema-lens", "mcp-serve"]\n    }\n  }\n}`,
+    json: `{\n  "mcpServers": {\n    "dbctx": {\n      "command": "npx",\n      "args": ["-y", "@jaydeepramanuj/schema-lens", "mcp-serve"]\n    }\n  }\n}`,
   },
   antigravity: {
     label: "Antigravity / Gemini",
     path: "~/.config/antigravity/tools.json",
-    json: `{\n  "tools": [\n    {\n      "name": "schema-lens",\n      "type": "stdio",\n      "command": "npx @jaydeepramanuj/schema-lens mcp-serve"\n    }\n  ]\n}`,
+    json: `{\n  "tools": [\n    {\n      "name": "schema-lens",\n      "type": "stdio",\n      "command": "npx -y @jaydeepramanuj/schema-lens mcp-serve"\n    }\n  ]\n}`,
   },
   windsurf: {
     label: "Windsurf / Copilot",
     path: "~/.codeium/windsurf/mcp_config.json",
-    json: `{\n  "mcpServers": {\n    "dbctx": {\n      "command": "npx",\n      "args": ["@jaydeepramanuj/schema-lens", "mcp-serve"]\n    }\n  }\n}`,
+    json: `{\n  "mcpServers": {\n    "dbctx": {\n      "command": "npx",\n      "args": ["-y", "@jaydeepramanuj/schema-lens", "mcp-serve"]\n    }\n  }\n}`,
   },
 } as const;
 
@@ -983,7 +983,7 @@ function SetupSection() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {[
-            { n: "1", title: "Generate Snapshot", body: <>Run <code className="text-[#4cd7f6] font-mono text-[11px]">npx dbctx init</code> with your connection URL once.</> },
+            { n: "1", title: "Generate Snapshot", body: <>Run <code className="text-[#4cd7f6] font-mono text-[11px]">npx -y @jaydeepramanuj/schema-lens init</code> with your connection URL once.</> },
             { n: "2", title: "Add MCP Config", body: "Paste the 5 lines of JSON above into your agent configuration." },
             { n: "3", title: "Zero Hallucinations", body: `Ask questions: "How does invoice link to billing address?"` },
           ].map(({ n, title, body }) => (

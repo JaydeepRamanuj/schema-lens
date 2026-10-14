@@ -21,7 +21,7 @@ title: "dbctx — Documentation"
 
 ```bash
 # One-time setup
-npm install -g dbctx          # or: npx dbctx
+npm install -g @jaydeepramanuj/schema-lens          # or: npx -y @jaydeepramanuj/schema-lens
 dbctx init --url postgres://user:pass@localhost/mydb
 
 # Day-to-day

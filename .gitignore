@@ -8,3 +8,9 @@ dbctx.config.json
 website/.docusaurus/
 website/build/
 website/node_modules/
+/references
+
+/docs/handoffs
+/docs/site
+/docs/temp
+/docs/refactors

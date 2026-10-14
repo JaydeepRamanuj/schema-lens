@@ -1,12 +1,13 @@
 {
   "name": "@jaydeepramanuj/schema-lens",
   "version": "0.1.0",
-  "description": "Local PostgreSQL schema store for coding agents — fast, offline-capable, always-fresh.",
+  "description": "Local PostgreSQL schema snapshot for coding agents, with a CLI and MCP server. Detects schema changes and works offline.",
   "keywords": [
     "postgresql",
     "postgres",
     "schema",
     "mcp",
+    "model-context-protocol",
     "ai",
     "agents",
     "cli",

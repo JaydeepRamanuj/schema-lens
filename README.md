@@ -1,6 +1,6 @@
 # schema-lens
 
-**Local PostgreSQL schema store for coding agents — fast, offline-capable, always-fresh.**
+**Local PostgreSQL schema snapshot for coding agents, with a CLI and MCP server. Detects schema changes and works offline.**
 
 `schema-lens` caches your database schema locally and serves accurate, structured answers in milliseconds. Instead of your AI agent firing multiple slow SQL introspection queries per task, it calls one fast local command and gets back exactly what it needs.
 

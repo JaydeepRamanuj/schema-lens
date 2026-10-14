@@ -50,17 +50,17 @@ Use **one** of these depending on what you know:
 
 ### 2. Inspect — get full structural detail
 
-Once you know the table names, use **`describe`** to get columns, constraints,
+Once you know the table names, use **`describe_tables`** to get columns, constraints,
 indexes, foreign keys, policies, and triggers.
 
-> **Batch-first rule**: `describe` accepts a `tables` array. Always pass
+> **Batch-first rule**: `describe_tables` accepts a `tables` array. Always pass
 > **all** the tables you need in a single call instead of making one call per
 > table.
 
 ```json
 {
   "ServerName": "dbctx",
-  "ToolName": "describe",
+  "ToolName": "describe_tables",
   "Arguments": {
     "tables": ["users", "documents", "document_versions"]
   }
@@ -73,7 +73,7 @@ Valid sections: `columns`, `constraints`, `indexes`, `fks`, `policies`, `trigger
 ```json
 {
   "ServerName": "dbctx",
-  "ToolName": "describe",
+  "ToolName": "describe_tables",
   "Arguments": {
     "tables": ["users", "documents"],
     "include": ["columns", "fks"]
@@ -93,12 +93,12 @@ alternative:
 
 | Goal | Tool | Key arguments |
 |---|---|---|
-| FK neighbours of a table (BFS) | `related` | `table`, `depth` (1–5, default 1) |
+| FK neighbours of a table (BFS) | `get_related_tables` | `table`, `depth` (1–5, default 1) |
 | Shortest FK path between two tables | `join_path` | `from`, `to` |
 | Columns shared across N tables (for JOINs) | `find_common_columns` | `tables` (array, min 2), optional `pattern` |
 
 ```json
-{ "ServerName": "dbctx", "ToolName": "related", "Arguments": { "table": "documents", "depth": 2 } }
+{ "ServerName": "dbctx", "ToolName": "get_related_tables", "Arguments": { "table": "documents", "depth": 2 } }
 ```
 ```json
 { "ServerName": "dbctx", "ToolName": "join_path", "Arguments": { "from": "users", "to": "comments" } }
@@ -151,7 +151,7 @@ Omit `table` to get all policies across every table.
 ### 8. Freshness check
 
 ```json
-{ "ServerName": "dbctx", "ToolName": "status", "Arguments": {} }
+{ "ServerName": "dbctx", "ToolName": "get_status", "Arguments": {} }
 ```
 
 Returns snapshot age, table count, DB reachability, and staleness flag.
@@ -160,20 +160,20 @@ Returns snapshot age, table count, DB reachability, and staleness flag.
 
 ## Efficiency Rules
 
-1. **Batch aggressively.** `describe` accepts multiple tables — always pass
+1. **Batch aggressively.** `describe_tables` accepts multiple tables — always pass
    all the tables you need in one call. Never loop one table at a time.
 2. **Use `include` to scope responses.** If you only need columns and foreign
    keys, pass `"include": ["columns", "fks"]`. Omitting unneeded sections
    reduces response size and makes the output easier to parse.
 3. **Start broad, then narrow.** Use `search_schema` or `list_tables` first
-   to discover relevant tables, then `describe` to get full detail for just
+   to discover relevant tables, then `describe_tables` to get full detail for just
    those tables.
 4. **Prefer `get_columns` for lightweight lookups.** When you only need column
    names and types for a single table, `get_columns` is cheaper than a full
-   `describe`.
+   `describe_tables`.
 5. **Use `find_common_columns` before writing JOINs.** It tells you which
    columns are shared across tables, so you don't have to manually cross-
-   reference multiple `describe` outputs.
+   reference multiple `describe_tables` outputs.
 6. **Check indexes before adding them.** Use `check_index` to see if a
    covering index already exists before proposing a new migration.
 
@@ -215,10 +215,10 @@ All MCP tools return structured JSON. Every response includes a `_meta` block:
 | Tool | Description |
 |---|---|
 | `list_tables` | List all tables/views; optional `filter` pattern |
-| `describe` | Full detail for one or more tables (batched); optional `include` filter |
+| `describe_tables` | Full detail for one or more tables (batched); optional `include` filter |
 | `get_columns` | Column names + types for a single table |
 | `get_column_constraints` | PK/FK/UNIQUE/CHECK constraints for specific columns |
-| `related` | FK neighbours via BFS; configurable `depth` |
+| `get_related_tables` | FK neighbours via BFS; configurable `depth` |
 | `find_columns` | Search all tables for columns matching a pattern |
 | `find_common_columns` | Columns shared across multiple tables |
 | `join_path` | Shortest FK path between two tables |
@@ -229,4 +229,4 @@ All MCP tools return structured JSON. Every response includes a `_meta` block:
 | `find_polymorphic` | Detect polymorphic association patterns |
 | `find_orphans` | Tables with no FK relationships |
 | `check_index` | Check for covering index on specific columns |
-| `status` | Snapshot health — age, table count, reachability, staleness |
+| `get_status` | Snapshot health — age, table count, reachability, staleness |

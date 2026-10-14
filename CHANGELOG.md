@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.1.2] — 2026-10-15
+
+Documentation fixes only. No behaviour changes.
+
+### Fixed
+
+- The bundled agent skill (`skills/db-schema-context/SKILL.md`) used tool names that don't exist (`describe`, `related`, `status`). It now uses `describe_tables`, `get_related_tables` and `get_status`, shows client-neutral call examples, and no longer claims the snapshot is verified on every call.
+- README: removed unmeasured speed claims and corrected the descriptions of `refresh` (re-extracts only with `--force`), `status` and `describe` output formats. The MCP example shows passing `DBCTX_URL` via `env`, the config section no longer tells you to copy a file that isn't in your project, and the programmatic API example shows where the connection ID comes from.
+- README: explains that the package installs a command and MCP server named `dbctx`, and that the unrelated `dbctx` npm package is not this project.
+- Freshness docs: plain `dbctx refresh` only re-extracts when the fingerprint changed; use `dbctx refresh --force` after a migration. Lists the changes the fingerprint does not detect.
+
 ## [0.1.1] — 2026-10-15
 
 Packaging and documentation fixes only. No behaviour changes.
